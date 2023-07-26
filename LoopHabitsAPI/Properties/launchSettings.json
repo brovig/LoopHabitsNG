@@ -1,0 +1,47 @@
+{
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:40080"
+    },
+    "https": {
+      "commandName": "Project",
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:40443;http://localhost:40080"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "launchUrl": "https://localhost:40443/swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "https://localhost:40443;http://localhost:40080"
+      },
+      "distributionName": ""
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:40080",
+      "sslPort": 40443
+    }
+  }
+}
