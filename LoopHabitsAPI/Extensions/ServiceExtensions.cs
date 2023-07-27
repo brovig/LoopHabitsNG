@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Contracts;
+using LoggerService;
 
 namespace LoopHabitsAPI.Extensions;
 
@@ -13,5 +14,10 @@ public static class ServiceExtensions
                 .AllowAnyMethod()
                 .AllowAnyHeader());
         });
+    }
+
+    public static void ConfigureLoggerService(this IServiceCollection services)
+    {
+        services.AddSingleton<ILoggerManager, LoggerManager>();
     }
 }

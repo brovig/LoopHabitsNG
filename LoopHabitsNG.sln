@@ -5,7 +5,11 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "LoopHabitsNG", "LoopHabitsNG\LoopHabitsNG.esproj", "{8B688661-0A1E-49A2-91FB-D44AE69DF767}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopHabitsAPI", "LoopHabitsAPI\LoopHabitsAPI.csproj", "{8D4DE2CD-6248-4D12-8E52-0FCB97D23D47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopHabitsAPI", "LoopHabitsAPI\LoopHabitsAPI.csproj", "{8D4DE2CD-6248-4D12-8E52-0FCB97D23D47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{FE35DB46-4763-418B-B5E1-19423DC5F1B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{60011A2E-D64E-4D82-B35D-5FA0BD29F2C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +27,14 @@ Global
 		{8D4DE2CD-6248-4D12-8E52-0FCB97D23D47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D4DE2CD-6248-4D12-8E52-0FCB97D23D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D4DE2CD-6248-4D12-8E52-0FCB97D23D47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE35DB46-4763-418B-B5E1-19423DC5F1B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE35DB46-4763-418B-B5E1-19423DC5F1B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE35DB46-4763-418B-B5E1-19423DC5F1B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE35DB46-4763-418B-B5E1-19423DC5F1B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60011A2E-D64E-4D82-B35D-5FA0BD29F2C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60011A2E-D64E-4D82-B35D-5FA0BD29F2C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60011A2E-D64E-4D82-B35D-5FA0BD29F2C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60011A2E-D64E-4D82-B35D-5FA0BD29F2C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
