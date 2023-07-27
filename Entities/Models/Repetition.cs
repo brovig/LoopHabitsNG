@@ -20,6 +20,6 @@ public class Repetition
     public double Value { get; set; }
 
     [ForeignKey(nameof(Habit))]
-    [Required(ErrorMessage = "HabitId is a required field.")]
     public Guid HabitId { get; set; }
+    public Habit? Habit { get; set; }
 }

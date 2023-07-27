@@ -25,7 +25,7 @@ public class Habit
 
     public int Position { get; set; }
 
-    public DateTime ReminderTime { get; set; }
+    public DateTime? ReminderTime { get; set; }
 
     public int ReminderDays { get; set; }
 

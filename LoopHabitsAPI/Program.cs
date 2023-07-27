@@ -1,5 +1,7 @@
 using LoopHabitsAPI.Extensions;
+using Microsoft.EntityFrameworkCore;
 using NLog;
+using Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,11 @@ LogManager.Setup().LoadConfigurationFromFile("nlog.config");
 // Add services to the container.
 builder.Services.ConfigureCors();
 builder.Services.ConfigureLoggerService();
+builder.Services.AddDbContext<RepositoryContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection"), 
+        b => b.MigrationsAssembly("LoopHabitsAPI"));
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
