@@ -15,6 +15,7 @@ builder.Services.AddDbContext<RepositoryContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection"), 
         b => b.MigrationsAssembly("LoopHabitsAPI"));
 });
+builder.Services.ConfigureRepositoryManager();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
