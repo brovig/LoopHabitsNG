@@ -16,6 +16,7 @@ builder.Services.AddDbContext<RepositoryContext>(options =>
         b => b.MigrationsAssembly("LoopHabitsAPI"));
 });
 builder.Services.ConfigureRepositoryManager();
+builder.Services.ConfigureServiceManager();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
