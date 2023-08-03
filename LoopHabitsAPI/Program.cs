@@ -15,10 +15,16 @@ builder.Services.AddDbContext<RepositoryContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection"), 
         b => b.MigrationsAssembly("LoopHabitsAPI"));
 });
+builder.Services.AddDbContext<SqliteBackupContext>(options =>
+{
+    options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection"));
+});
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddApplicationPart(typeof(LoopHabits.Presentation.AssemblyReference).Assembly);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

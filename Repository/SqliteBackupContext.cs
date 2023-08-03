@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Entities.SeedDataModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace Entities.SeedDataModels;
+namespace Repository;
 
-public partial class LoopHabitsBackupContext : DbContext
+public partial class SqliteBackupContext : DbContext
 {
-    public LoopHabitsBackupContext()
+    public SqliteBackupContext()
     {
     }
 
-    public LoopHabitsBackupContext(DbContextOptions<LoopHabitsBackupContext> options)
+    public SqliteBackupContext(DbContextOptions<SqliteBackupContext> options)
         : base(options)
     {
     }
@@ -22,10 +21,6 @@ public partial class LoopHabitsBackupContext : DbContext
     public virtual DbSet<Habit> Habits { get; set; }
 
     public virtual DbSet<Repetition> Repetitions { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlite("Data Source=LoopHabitsBackup.db");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
