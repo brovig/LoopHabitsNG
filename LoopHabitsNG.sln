@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Contracts", "Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{AA350855-9694-47A7-8EC3-9059068DCD32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopHabits.Presentation", "LoopHabits.Presentation\LoopHabits.Presentation.csproj", "{6AA022A3-193C-427C-8A4C-7D02D1DB8184}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopHabits.Presentation", "LoopHabits.Presentation\LoopHabits.Presentation.csproj", "{6AA022A3-193C-427C-8A4C-7D02D1DB8184}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{C5751385-EDD6-4D8F-B68F-C91A2D19AF23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,10 @@ Global
 		{6AA022A3-193C-427C-8A4C-7D02D1DB8184}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AA022A3-193C-427C-8A4C-7D02D1DB8184}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AA022A3-193C-427C-8A4C-7D02D1DB8184}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5751385-EDD6-4D8F-B68F-C91A2D19AF23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5751385-EDD6-4D8F-B68F-C91A2D19AF23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5751385-EDD6-4D8F-B68F-C91A2D19AF23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5751385-EDD6-4D8F-B68F-C91A2D19AF23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
