@@ -40,4 +40,6 @@ public class Habit
     public string? Unit { get; set; }
 
     public string? Question { get; set; }
+
+    public ICollection<Repetition>? Repetitions { get; set; }
 }

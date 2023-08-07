@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Entities.SeedDataModels;
+﻿namespace Entities.SeedDataModels;
 
 public partial class Habit
 {

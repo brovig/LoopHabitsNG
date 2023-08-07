@@ -111,12 +111,17 @@ namespace LoopHabitsAPI.Migrations
             modelBuilder.Entity("Entities.Models.Repetition", b =>
                 {
                     b.HasOne("Entities.Models.Habit", "Habit")
-                        .WithMany()
+                        .WithMany("Repetitions")
                         .HasForeignKey("HabitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Habit");
+                });
+
+            modelBuilder.Entity("Entities.Models.Habit", b =>
+                {
+                    b.Navigation("Repetitions");
                 });
 #pragma warning restore 612, 618
         }
