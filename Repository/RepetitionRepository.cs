@@ -20,7 +20,7 @@ public class RepetitionRepository : RepositoryBase<Repetition>, IRepetitionRepos
         return await FindByCondition(r => r.HabitId.Equals(habitId) && r.Id.Equals(id), trackChanges).SingleOrDefaultAsync();
     }
 
-    public void CreateRepetitionForHabit(Guid habitId, Repetition repetition)
+    public void CreateRepetition(Guid habitId, Repetition repetition)
     {
         repetition.HabitId = habitId;
         Create(repetition);

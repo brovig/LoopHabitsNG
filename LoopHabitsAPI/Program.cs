@@ -21,6 +21,7 @@ builder.Services.AddDbContext<SqliteBackupContext>(options =>
 });
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
+builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(LoopHabits.Presentation.AssemblyReference).Assembly);

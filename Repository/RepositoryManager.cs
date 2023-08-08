@@ -19,11 +19,11 @@ public class RepositoryManager : IRepositoryManager
         _sqliteBackupRepository = new Lazy<ISqliteBackupRepository>(() => new SqliteBackupRepository(sqliteBackupContext));
     }
 
-    public IHabitRepository HabitRepository => _habitRepository.Value;
+    public IHabitRepository Habit => _habitRepository.Value;
 
-    public IRepetitionRepository RepetitionRepository => _repetitionRepository.Value;
+    public IRepetitionRepository Repetition => _repetitionRepository.Value;
 
-    public ISqliteBackupRepository SqliteBackupRepository => _sqliteBackupRepository.Value;
+    public ISqliteBackupRepository SqliteBackup => _sqliteBackupRepository.Value;
 
-    public void Save() => _repositoryContext.SaveChanges();
+    public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
 }

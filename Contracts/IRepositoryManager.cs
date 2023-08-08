@@ -2,8 +2,8 @@
 
 public interface IRepositoryManager
 {
-    IHabitRepository HabitRepository { get; }
-    IRepetitionRepository RepetitionRepository { get; }
-    ISqliteBackupRepository SqliteBackupRepository { get; }
-    void Save();
+    IHabitRepository Habit { get; }
+    IRepetitionRepository Repetition { get; }
+    ISqliteBackupRepository SqliteBackup { get; }
+    Task SaveAsync();
 }
