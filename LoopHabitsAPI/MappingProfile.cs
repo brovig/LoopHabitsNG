@@ -14,8 +14,20 @@ public class MappingProfile: Profile
         CreateMap<Habit, HabitDto>().ReverseMap();
         CreateMap<Repetition, RepetitionDto>().ReverseMap();
 
+        CreateMap<HabitForCreationDto, Habit>();
+
         CreateMap<RepetitionForCreationDto, Repetition>();
         CreateMap<RepetitionForCreationDto, Repetition>().ReverseMap();
+
+        CreateMap<Entities.SeedDataModels.Habit, HabitForCreationDto>()
+            .ForMember(dest => dest.IsArchived, act => act.MapFrom(src => src.Archived))
+            .ForMember(dest => dest.FrequencyDensity, act => act.MapFrom(src => src.FreqDen))
+            .ForMember(dest => dest.FrequencyNumber, act => act.MapFrom(src => src.FreqNum))
+            .ForMember(dest => dest.FrequencyDensity, act => act.MapFrom(src => src.FreqDen))
+            .ForMember(dest => dest.ReminderTime, act => act.MapFrom(x => new DateTime(1, 1, 1, Convert.ToInt32(x.ReminderHour), Convert.ToInt32(x.ReminderMin), 0)));
+
+        CreateMap<Entities.SeedDataModels.Repetition, RepetitionForCreationDto>()
+            .ForMember(dest => dest.TimeStamp, act => act.MapFrom(srs => DateTimeOffset.FromUnixTimeMilliseconds(srs.Timestamp).UtcDateTime));
 
         CreateMap<RepetitionForUpdateDto, Repetition>();
     }

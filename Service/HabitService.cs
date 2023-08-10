@@ -20,7 +20,7 @@ internal sealed class HabitService : IHabitService
         _mapper = mapper;
     }
 
-    public async Task<HabitDto> CreateHabitAsync(HabitDto habit)
+    public async Task<HabitDto> CreateHabitAsync(HabitForCreationDto habit)
     {
         var habitEntity = _mapper.Map<Habit>(habit);
 
@@ -31,7 +31,7 @@ internal sealed class HabitService : IHabitService
         return habitToReturn;
     }
 
-    public async Task<(IEnumerable<HabitDto> habits, string ids)> CreateHabitCollectionAsync(IEnumerable<HabitDto> habitCollection)
+    public async Task<(IEnumerable<HabitDto> habits, string ids)> CreateHabitCollectionAsync(IEnumerable<HabitForCreationDto> habitCollection)
     {
         if (habitCollection is null)
             throw new HabitCollectionBadRequestException();

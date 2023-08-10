@@ -14,7 +14,7 @@ public sealed class ServiceManager : IServiceManager
     {
         _habitService = new Lazy<IHabitService>(() => new HabitService(repositoryManager, logger, mapper));
         _repetitionService = new Lazy<IRepetitionService>(() => new RepetitionService(repositoryManager, logger, mapper));
-        _seedService = new Lazy<ISeedService>(() => new SeedService(repositoryManager, logger));
+        _seedService = new Lazy<ISeedService>(() => new SeedService(repositoryManager, logger, mapper));
     }
 
     public IHabitService HabitService => _habitService.Value;

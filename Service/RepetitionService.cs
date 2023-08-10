@@ -33,6 +33,17 @@ internal sealed class RepetitionService : IRepetitionService
         return repetitionToReturn;
     }
 
+    public async Task<IEnumerable<RepetitionDto>> CreateRepetitionCollectionAsync(Guid habitId, IEnumerable<RepetitionForCreationDto> repetitionsForCreation, bool trackChanges)
+    {
+        var result = new List<RepetitionDto>();
+        foreach(var repetition in repetitionsForCreation)
+        {
+            var addedRepetition = await CreateRepetitionAsync(habitId, repetition, trackChanges: false);
+            result.Add(addedRepetition);
+        }
+        return result;
+    }
+
     public async Task<IEnumerable<RepetitionDto>> GetAllRepetitionsAsync(Guid habitId, bool trackChanges)
     {
         await CheckIfHabitExists(habitId, trackChanges);
