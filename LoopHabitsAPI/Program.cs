@@ -1,3 +1,6 @@
+using CompanyEmployees.Extensions;
+using CompanyEmployees.Presentation.ActionFilters;
+using Contracts;
 using LoopHabitsAPI.Extensions;
 using Microsoft.EntityFrameworkCore;
 using NLog;
@@ -22,6 +25,7 @@ builder.Services.AddDbContext<SqliteBackupContext>(options =>
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddScoped<ValidationFilterAttribute>();
 
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(LoopHabits.Presentation.AssemblyReference).Assembly);
@@ -32,12 +36,15 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+var logger = app.Services.GetRequiredService<ILoggerManager>();
+app.ConfigureExceptionHandler(logger);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseDeveloperExceptionPage();
+    //app.UseDeveloperExceptionPage();
 }
 else
 {

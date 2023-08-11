@@ -50,9 +50,11 @@ internal sealed class HabitService : IHabitService
         return (habits: habitsToReturn, ids: ids);
     }
 
-    public Task DeleteCompanyAsync(Guid habitId, bool trackChanges)
+    public async Task DeleteHabitAsync(Guid habitId, bool trackChanges)
     {
-        throw new NotImplementedException();
+        var habit = await GetHabitAndCheckIfItExists(habitId, trackChanges);
+        _repository.Habit.DeleteHabit(habit);
+        await _repository.SaveAsync();
     }
 
     public async Task<IEnumerable<HabitDto>> GetAllHabitsAsync(bool trackChanges)
@@ -67,13 +69,25 @@ internal sealed class HabitService : IHabitService
         throw new NotImplementedException();
     }
 
-    public Task<HabitDto> GetHabitAsync(Guid habitId, bool trackChanges)
+    public async Task<HabitDto> GetHabitAsync(Guid habitId, bool trackChanges)
     {
-        throw new NotImplementedException();
+        var habit = await GetHabitAndCheckIfItExists(habitId, trackChanges);
+        var habitDto = _mapper.Map<HabitDto>(habit);
+        return habitDto;
     }
 
-    public Task UpdateCompanyAsync(Guid habitId, HabitDto companyForUpdate, bool trackChanges)
+    public async Task UpdateHabitAsync(Guid habitId, HabitForUpdateDto habitForUpdate, bool trackChanges)
     {
-        throw new NotImplementedException();
+        var habit = await GetHabitAndCheckIfItExists(habitId, trackChanges);
+        _mapper.Map(habitForUpdate, habit);
+        await _repository.SaveAsync();
+    }
+
+    private async Task<Habit> GetHabitAndCheckIfItExists(Guid id, bool trackChanges)
+    {
+        var habit = await _repository.Habit.GetHabitAsync(id, trackChanges);
+        if (habit is null)
+            throw new HabitNotFoundException(id);
+        return habit;
     }
 }
