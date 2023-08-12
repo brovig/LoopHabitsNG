@@ -2,6 +2,7 @@ using CompanyEmployees.Extensions;
 using CompanyEmployees.Presentation.ActionFilters;
 using Contracts;
 using LoopHabitsAPI.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Repository;
@@ -26,6 +27,11 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<ValidationFilterAttribute>();
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(LoopHabits.Presentation.AssemblyReference).Assembly);

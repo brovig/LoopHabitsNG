@@ -28,7 +28,8 @@ public class MappingProfile: Profile
 
         CreateMap<Entities.SeedDataModels.Repetition, RepetitionForCreationDto>()
             .ForMember(dest => dest.TimeStamp, act => act.MapFrom(srs => DateTimeOffset.FromUnixTimeMilliseconds(srs.Timestamp).UtcDateTime));
-
+        
+        CreateMap<HabitForUpdateDto, Habit>();
         CreateMap<RepetitionForUpdateDto, Repetition>();
     }
 }

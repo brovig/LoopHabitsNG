@@ -31,6 +31,7 @@ public class HabitsController : ControllerBase
     }
 
     [HttpPost]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateHabit([FromBody] HabitForCreationDto habit)
     {
         var createdHabit = await _service.HabitService.CreateHabitAsync(habit);
