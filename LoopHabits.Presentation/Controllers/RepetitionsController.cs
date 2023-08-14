@@ -38,7 +38,7 @@ public class RepetitionsController : ControllerBase
         return CreatedAtRoute("GetRepetitionForHabit", new { habitId, id = repetitionToReturn.Id }, repetitionToReturn);
     }
 
-    [HttpPut]
+    [HttpPut("{id:int}")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateRepetition(Guid habitId, int id, [FromBody] RepetitionForUpdateDto repetition)
     {
