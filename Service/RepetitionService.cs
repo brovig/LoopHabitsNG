@@ -74,6 +74,15 @@ internal sealed class RepetitionService : IRepetitionService
         await _repository.SaveAsync();
     }
 
+    public async Task DeleteRepetitionAsync(Guid habitId, int id, bool trackChanges)
+    {
+        await CheckIfHabitExists(habitId, trackChanges);
+
+        var repetition = await GetRepetitionAndCheckIfItExists(habitId, id, trackChanges);
+        _repository.Repetition.DeleteRepetition(repetition);
+        await _repository.SaveAsync();
+    }
+
 
     // helper methods
     private async Task CheckIfHabitExists(Guid habitId, bool trackChanges)

@@ -9,4 +9,5 @@ public interface IRepetitionService
     Task<RepetitionDto> CreateRepetitionAsync(Guid habitId, RepetitionForCreationDto repetitionForCreation, bool trackChanges);
     Task UpdateRepetitionAsync(Guid habitId, int id, RepetitionForUpdateDto repetitionForUpdate, bool habitTrackChanges, bool repetitionTrackChanges);
     Task<IEnumerable<RepetitionDto>> CreateRepetitionCollectionAsync(Guid habitId, IEnumerable<RepetitionForCreationDto> repetitionsForCreation, bool trackChanges);
+    Task DeleteRepetitionAsync(Guid habitId, int id, bool trackChanges);
 }

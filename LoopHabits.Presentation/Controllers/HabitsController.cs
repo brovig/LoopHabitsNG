@@ -37,19 +37,19 @@ public class HabitsController : ControllerBase
         var createdHabit = await _service.HabitService.CreateHabitAsync(habit);
         return CreatedAtRoute("HabitById", new { id = createdHabit.Id }, createdHabit);
     }
-
-    [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteHabit(Guid id)
-    {
-        await _service.HabitService.DeleteHabitAsync(id, trackChanges: false);
-        return NoContent();
-    }
-
+       
     [HttpPut("{id:guid}")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateHabit(Guid id, [FromBody] HabitForUpdateDto habit)
     {
         await _service.HabitService.UpdateHabitAsync(id, habit, trackChanges: true);
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteHabit(Guid id)
+    {
+        await _service.HabitService.DeleteHabitAsync(id, trackChanges: false);
         return NoContent();
     }
 }
