@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
+import { HabitsComponent } from './habits/habits.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HabitsComponent
   ],
   imports: [
     BrowserModule, HttpClientModule
