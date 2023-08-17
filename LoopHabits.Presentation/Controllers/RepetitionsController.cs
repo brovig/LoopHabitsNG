@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Shared.RequestFeatures;
 
 namespace LoopHabits.Presentation.Controllers;
 
@@ -17,9 +18,9 @@ public class RepetitionsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetRepetitions(Guid habitId)
+    public async Task<IActionResult> GetRepetitions(Guid habitId, [FromQuery] RepetitionParameters repetitionParameters)
     {
-        var repetitions = await _service.RepetitionService.GetAllRepetitionsAsync(habitId, trackChanges: false);
+        var repetitions = await _service.RepetitionService.GetRepetitionsAsync(habitId, repetitionParameters, trackChanges: false);
         return Ok(repetitions);
     }
 

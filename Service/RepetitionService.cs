@@ -4,6 +4,7 @@ using Entities.Exceptions;
 using Entities.Models;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Shared.RequestFeatures;
 
 namespace Service;
 
@@ -44,11 +45,11 @@ internal sealed class RepetitionService : IRepetitionService
         return result;
     }
 
-    public async Task<IEnumerable<RepetitionDto>> GetAllRepetitionsAsync(Guid habitId, bool trackChanges)
+    public async Task<IEnumerable<RepetitionDto>> GetRepetitionsAsync(Guid habitId, RepetitionParameters repetitionParameters, bool trackChanges)
     {
         await CheckIfHabitExists(habitId, trackChanges);
 
-        var repetitions = await _repository.Repetition.GetAllRepetitionsAsync(habitId, trackChanges);
+        var repetitions = await _repository.Repetition.GetRepetitionsAsync(habitId, repetitionParameters, trackChanges);
 
         var repetitionsDto = _mapper.Map<IEnumerable<RepetitionDto>>(repetitions);
         return repetitionsDto;

@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared.RequestFeatures;
 
 namespace Repository;
 
@@ -10,9 +11,12 @@ public class RepetitionRepository : RepositoryBase<Repetition>, IRepetitionRepos
     {
     }
 
-    public async Task<IEnumerable<Repetition>> GetAllRepetitionsAsync(Guid habitId, bool trackChanges)
+    public async Task<IEnumerable<Repetition>> GetRepetitionsAsync(Guid habitId, RepetitionParameters repetitionParameters, bool trackChanges)
     {
-        return await FindByCondition(r => r.HabitId.Equals(habitId), trackChanges).ToListAsync();
+        return await FindByCondition(r => r.HabitId.Equals(habitId) && r.Timestamp >= repetitionParameters.StartDate
+                                    && r.Timestamp <= repetitionParameters.EndDate, trackChanges)
+                                    .OrderByDescending(r => r.Timestamp)
+                                    .ToListAsync();
     }
 
     public async Task<Repetition> GetRepetitionAsync(Guid habitId, int id, bool trackChanges)
