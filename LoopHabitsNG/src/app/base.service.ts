@@ -7,17 +7,13 @@ export abstract class BaseService<T> {
     protected http: HttpClient) {
   }
 
-  abstract getData(): Observable<T[]>;
-  abstract get(id: number | string): Observable<T>;
-  abstract put(item: T): Observable<T>;
-  abstract post(item: T): Observable<T>;
-  abstract delete(id: number | string): Observable<T>;
+  //abstract getData(): Observable<T[]>;
+  //abstract get(id: number | string): Observable<T>;
+  //abstract put(item: T): Observable<T>;
+  //abstract post(item: T): Observable<T>;
+  //abstract delete(id: number | string): Observable<T>;
 
   protected getUrl(url: string) {
     return environment.baseUrl + url;
   }
-}
-
-export interface ApiResult<T> {
-  data: T[];
 }

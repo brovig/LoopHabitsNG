@@ -1,3 +1,32 @@
 table.mat-table {
   width: 100%;
 }
+
+th {
+  white-space: pre-line !important;
+  text-align: center !important;
+  font-size: 10px;
+  padding: 0px 0px;
+}
+
+td {
+  padding: 0px 0px;
+}
+
+.mat-column-name {
+  min-width: 100px;
+  padding: 0px 16px;
+}
+
+.rep {
+  transform: scale(0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 0px;
+}
+
+mat-flat-button {
+    height: 48px;
+    width: 48px;
+}

@@ -16,4 +16,5 @@ export interface Habit {
   targetValue: number;
   unit: string;
   question: string;
+  repetitions: object[];
 }

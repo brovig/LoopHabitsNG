@@ -1,5 +1,5 @@
 export interface Repetition {
   id: number;
-  timeStamp: Date;
+  timeStamp: string;
   value: number;
 }
