@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 
 import { Habit } from './habit';
 import { HabitService } from './habit.service';
 import { RepetitionService } from './repetition.service';
 import { Repetition } from './repetition';
+import { MatDialog } from '@angular/material/dialog';
+import { RepEditComponent } from './rep-edit.component';
 
 @Component({
   selector: 'app-habits',
@@ -20,8 +23,10 @@ export class HabitsComponent implements OnInit {
   public numberOfDaysToDisplay!: number;
   public screenWidth!: number;
 
-  constructor(private habitService: HabitService,
-    private repetitionService: RepetitionService) {
+  constructor(private router: Router,
+    private habitService: HabitService,
+    private repetitionService: RepetitionService,
+    private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -42,7 +47,7 @@ export class HabitsComponent implements OnInit {
   getDatesToDisplay() {
     // Calculate the amount of repetitions to display on screen
     this.screenWidth = window.innerWidth;
-    this.numberOfDaysToDisplay = Math.floor((this.screenWidth - 100) / 65);
+    this.numberOfDaysToDisplay = Math.floor((this.screenWidth - 100) / 64);
 
     // Populate dates
     const d = new Date();
@@ -83,6 +88,74 @@ export class HabitsComponent implements OnInit {
       const dateColumnName = d.toLocaleString('en-us', { weekday: 'short', day: "numeric" }).toUpperCase().split(" ").join("\n");
       this.displayedColumns.push(dateColumnName);
     })
+  }
+
+  handleRepButtonClick(habit: Habit, repetition: Repetition) {
+    switch (habit.type) {
+      // Yes/no habit
+      case 0: {
+        switch (repetition.value) {
+
+          // Rep doesn't exist -> create one
+          case -1: {
+            repetition.value = 2;
+            this.repetitionService.post(habit.id, repetition).subscribe((result) => {
+              repetition.id = result.id;
+              //this.router.navigate(['/habits']);
+            });
+            break;
+          }
+
+          // Rep exists but with zero value (was created earlier and canceled) -> change value to "2"
+          case 0: {
+            repetition.value = 2;
+            this.repetitionService.put(habit.id, repetition).subscribe(() => { })
+            break;
+          }
+
+          // Rep exists -> change value to "0"
+          case 2: {
+            repetition.value = 0;
+            this.repetitionService.put(habit.id, repetition).subscribe(() => { })
+            break;
+          }
+        }
+        break;
+      }
+      // Measurable habit
+      case 1: {
+        this.editMeasurableRep(habit.id, repetition);
+        break;
+      }
+    }
+  }
+
+  editMeasurableRep(habitId: string, rep: Repetition) {
+    const dialogRef = this.dialog.open(RepEditComponent, { data: rep.value/1000 });   
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (typeof result === "number" && result >= 0) {
+        // Rep doesn't exist -> create one
+        if (rep.id === -1 && result !== 0) {
+          rep.value = result * 1000;
+          this.repetitionService.post(habitId, rep).subscribe((result) => {
+            rep.id = result.id;
+          });
+        // Rep exists -> change if new value inserted
+        } else {
+          if (result === 0) {
+            this.repetitionService.delete(habitId, rep.id).subscribe(() => { });
+            rep.id = -1;
+            rep.value = 0;
+          } else if (result !== rep.value / 1000) {
+            rep.value = result * 1000;
+            this.repetitionService.put(habitId, rep).subscribe(() => { });
+          }
+        }
+      }
+    });
+
+    
   }
 
   getColor(key: number) {

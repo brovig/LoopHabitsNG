@@ -20,14 +20,13 @@ td {
 }
 
 .rep {
-  transform: scale(0.7);
+  transform: scale(0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0px 0px;
 }
 
-mat-flat-button {
-    height: 48px;
-    width: 48px;
+.rep-measurable {
+  transform: scale(1.4);
 }

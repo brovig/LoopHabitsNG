@@ -15,25 +15,34 @@
     <td mat-cell *matCellDef="let habit" [hidden]="!habit.repetitions">
       <div class="rep" [ngSwitch]="habit.repetitions?.[displayedDates.indexOf(date)].value"
            [ngStyle]="{'color': getColor(habit.color)}">
-        <button *ngSwitchCase="-1" mat-icon-button>
+        <button *ngSwitchCase="-1" mat-icon-button
+                (click)="handleRepButtonClick(habit, habit.repetitions?.[displayedDates.indexOf(date)])">
           <mat-icon>close</mat-icon>
         </button>
-        <div class="rep" *ngSwitchCase="0">
-          <button *ngIf="habit.type === 0" mat-icon-button>
+        <div *ngSwitchCase="0">
+          <button *ngIf="habit.type === 0" mat-icon-button
+                  (click)="handleRepButtonClick(habit, habit.repetitions?.[displayedDates.indexOf(date)])">
             <mat-icon >close</mat-icon>
           </button>
-          <button *ngIf="habit.type === 1" mat-flat-button style="transform: scale(1.7)"
-                  [ngStyle]="{'color': getColor(habit.color)}">
-            0
-          </button>
+          <div class="rep-measurable">
+            <button *ngIf="habit.type === 1" mat-flat-button
+                    [ngStyle]="{'color': getColor(habit.color)}"
+                    (click)="handleRepButtonClick(habit, habit.repetitions?.[displayedDates.indexOf(date)])">
+              0
+            </button>
+          </div>          
         </div>
-        <button *ngSwitchCase="2" mat-icon-button>
+        <button *ngSwitchCase="2" mat-icon-button
+                (click)="handleRepButtonClick(habit, habit.repetitions?.[displayedDates.indexOf(date)])">
           <mat-icon>check</mat-icon>
         </button>
-        <button *ngSwitchDefault mat-flat-button style="transform: scale(1.19)"
-                [ngStyle]="{'color': getColor(habit.color)}">
-          {{habit.repetitions?.[displayedDates.indexOf(date)].value / 1000}}
-        </button>
+        <div class="rep-measurable">
+          <button *ngSwitchDefault mat-flat-button
+                  [ngStyle]="{'color': getColor(habit.color)}"
+                  (click)="handleRepButtonClick(habit, habit.repetitions?.[displayedDates.indexOf(date)])">
+            {{habit.repetitions?.[displayedDates.indexOf(date)].value / 1000}}
+          </button>
+        </div>
       </div>
     </td>
   </ng-container>

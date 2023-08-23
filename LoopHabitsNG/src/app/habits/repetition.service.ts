@@ -49,7 +49,7 @@ export class RepetitionService extends BaseService<Repetition> {
   }
 
   delete(habitId: string,
-    id: string): Observable<Repetition> {
+    id: number): Observable<Repetition> {
     const url = this.getUrl("api/habits/" + habitId + "/repetitions/" + id);
     return this.http.delete<Repetition>(url);
   }
