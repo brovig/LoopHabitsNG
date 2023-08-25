@@ -22,8 +22,4 @@ export class RepEditComponent implements OnInit {
       value: new FormControl('', [Validators.min(0)])
     });
   }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
 }

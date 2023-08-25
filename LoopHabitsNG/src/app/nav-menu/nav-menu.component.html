@@ -1,5 +1,18 @@
 <header>
   <mat-toolbar color="primary">
-    Habits
+
+    <div>
+      Habits
+    </div>
+
+    <span class="separator"></span>
+
+    <button mat-icon-button (click)="addHabit()">
+      <mat-icon>add</mat-icon>
+    </button>
+    <button mat-icon-button (click)="settings()">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
   </mat-toolbar>
 </header>

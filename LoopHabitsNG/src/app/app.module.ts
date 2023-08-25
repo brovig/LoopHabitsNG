@@ -10,6 +10,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { RepEditComponent } from './habits/rep-edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HabitTypeChooseComponent } from './habits/habit-type-choose.component';
+import { HabitCreateComponent } from './habit-create/habit-create.component';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     HabitsComponent,
     NavMenuComponent,
-    RepEditComponent
+    RepEditComponent,
+    HabitTypeChooseComponent,
+    HabitCreateComponent
   ],
   imports: [
     BrowserModule,
