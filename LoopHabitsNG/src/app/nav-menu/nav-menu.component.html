@@ -1,10 +1,9 @@
 <header>
   <mat-toolbar color="primary">
-
     <div>
-      Habits
+      <a [routerLink]="['/habits']">Habits</a>
     </div>
-
+    
     <span class="separator"></span>
 
     <button mat-icon-button (click)="addHabit()">
