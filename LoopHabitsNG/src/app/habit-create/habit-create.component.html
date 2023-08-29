@@ -1,1 +1,70 @@
-<p>habit-create works!</p>
+<div class="habit-create">
+  <h2>{{title}}</h2>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="habitType != undefined">
+
+    <mat-form-field class="form-name">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" required placeholder="e.g. Run" />
+      <mat-error *ngIf="!form.valid">Cannot be blank</mat-error>
+
+    </mat-form-field>
+
+    <mat-form-field class="form-color">
+      <mat-label>Color</mat-label>
+      <mat-select formControlName="color" style="height: 24px; display: flex">
+        <mat-select-trigger>
+          <mat-icon [ngStyle]="{'color': form.controls['color'].value}">circle</mat-icon>
+        </mat-select-trigger>
+        <mat-option *ngFor="let col of colors" [value]="col">
+          <button mat-mini-fab [ngStyle]="{'background-color': col}"></button>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Question</mat-label>
+      <input matInput formControlName="question" placeholder="e.g. How many miles did you run today?" />
+    </mat-form-field>
+
+    <mat-form-field *ngIf="habitType === 1">
+      <mat-label>Unit</mat-label>
+      <input matInput formControlName="unit" placeholder="e.g. miles" />
+    </mat-form-field>
+
+    <mat-form-field *ngIf="habitType === 1">
+      <mat-label>Target</mat-label>
+      <input matInput type="number" formControlName="targetValue" required placeholder="e.g. 15" />
+      <mat-error *ngIf="!form.valid">Enter a number</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Frequency</mat-label>
+      <input matInput formControlName="frequency" (click)="frequencyDialog()" style="cursor: pointer" readonly />
+      <mat-icon matSuffix (click)="frequencyDialog()" style="color: #b2b2b2; padding: 10px">arrow_drop_down</mat-icon>
+      <!--<input matInput formControlName="frequencyNumber" />-->
+    </mat-form-field>
+
+    <mat-form-field class="form-reminder-time">
+      <mat-label>Reminder</mat-label>
+      <input matInput formControlName="reminderTime" />
+    </mat-form-field>
+
+    <mat-form-field class="form-reminder-days" *ngIf="form.controls['reminderTime'].value">
+      <input matInput formControlName="reminderDays" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Notes</mat-label>
+      <input matInput formControlName="notes" placeholder="(Optional)" />
+    </mat-form-field>
+
+    <div>
+      <button mat-flat-button type="submit" color="primary" [disabled]="!form.valid">
+        {{ this.habit ? "Save" : "Create"}}
+      </button>
+    </div>
+
+  </form>
+
+
+</div>

@@ -8,6 +8,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   imports: [
@@ -19,7 +21,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatSortModule,
     MatInputModule,
     MatSelectModule,
-    MatDialogModule
+    MatDialogModule,
+    MatChipsModule,
+    MatRadioModule
   ],
   exports: [
     MatButtonModule,
@@ -30,7 +34,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatSortModule,
     MatInputModule,
     MatSelectModule,
-    MatDialogModule
+    MatDialogModule,
+    MatChipsModule,
+    MatRadioModule
   ]
 })
 export class AngularMaterialModule { }

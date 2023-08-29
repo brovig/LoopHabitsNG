@@ -8,7 +8,7 @@ import { HabitCreateComponent } from './habit-create/habit-create.component';
 const routes: Routes = [
   { path: '', component: HabitsComponent },
   { path: 'habits', component: HabitsComponent },
-  { path: 'create/:type', component: HabitCreateComponent }
+  { path: 'habit/:id', component: HabitCreateComponent }
 ];
 
 @NgModule({

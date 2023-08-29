@@ -10,20 +10,16 @@ import { HabitTypeChooseComponent } from '../habits/habit-type-choose.component'
   styleUrls: ['./nav-menu.component.scss']
 })
 export class NavMenuComponent {
-  public habitTypeToCreate!: number;
 
   constructor(private dialog: MatDialog,
     private router: Router) { }
-
 
   addHabit(): void {
     const dialogRef = this.dialog.open(HabitTypeChooseComponent);
 
     dialogRef.afterClosed().subscribe(habitType => {
-      console.log(habitType);
-
       if (typeof habitType === "number") {
-        this.router.navigate(['/create', habitType]);
+        this.router.navigate(['/habit', habitType]);
       }
     }, error => console.error(error));
   }
