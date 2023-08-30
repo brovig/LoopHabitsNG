@@ -1,6 +1,6 @@
 <div class="habit-create">
   <h2>{{title}}</h2>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="habitType != undefined">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="this.habit">
 
     <mat-form-field class="form-name">
       <mat-label>Name</mat-label>
@@ -26,36 +26,46 @@
       <input matInput formControlName="question" placeholder="e.g. How many miles did you run today?" />
     </mat-form-field>
 
-    <mat-form-field *ngIf="habitType === 1">
+    <mat-form-field *ngIf="this.habit.type === 1">
       <mat-label>Unit</mat-label>
       <input matInput formControlName="unit" placeholder="e.g. miles" />
     </mat-form-field>
 
-    <mat-form-field *ngIf="habitType === 1">
+    <mat-form-field *ngIf="this.habit.type === 1">
       <mat-label>Target</mat-label>
       <input matInput type="number" formControlName="targetValue" required placeholder="e.g. 15" />
       <mat-error *ngIf="!form.valid">Enter a number</mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field *ngIf="this.habit.type === 0">
       <mat-label>Frequency</mat-label>
-      <input matInput formControlName="frequency" (click)="frequencyDialog()" style="cursor: pointer" readonly />
-      <mat-icon matSuffix (click)="frequencyDialog()" style="color: #b2b2b2; padding: 10px">arrow_drop_down</mat-icon>
-      <!--<input matInput formControlName="frequencyNumber" />-->
+        <input matInput formControlName="frequency" (click)="frequencyDialog()" style="cursor: pointer" readonly />
+        <mat-icon matSuffix (click)="frequencyDialog()" style="color: #b2b2b2; padding: 10px">arrow_drop_down</mat-icon>
     </mat-form-field>
 
-    <mat-form-field class="form-reminder-time">
+    <mat-form-field *ngIf="this.habit.type === 1">
+      <mat-label>Frequency</mat-label>
+      <mat-select formControlName="frequency" [(value)]="selectedFrequency">
+        <mat-select-trigger>{{selectedFrequency}}</mat-select-trigger>
+        <mat-option value="Every day">Every day</mat-option>
+        <mat-option value="Every week">Every week</mat-option>
+        <mat-option value="Every month">Every month</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!--For later implementation-->
+    <!--<mat-form-field class="form-reminder-time">
       <mat-label>Reminder</mat-label>
       <input matInput formControlName="reminderTime" />
     </mat-form-field>
 
     <mat-form-field class="form-reminder-days" *ngIf="form.controls['reminderTime'].value">
       <input matInput formControlName="reminderDays" />
-    </mat-form-field>
+    </mat-form-field>-->
 
     <mat-form-field>
       <mat-label>Notes</mat-label>
-      <input matInput formControlName="notes" placeholder="(Optional)" />
+      <input matInput formControlName="description" placeholder="(Optional)" />
     </mat-form-field>
 
     <div>

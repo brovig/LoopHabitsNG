@@ -1,18 +1,15 @@
 <div mat-dialog-content style="padding: 10px 15px;">
-  <mat-radio-group mat-dialog-actions class="frequency-dialog-container">
-
-    <mat-radio-button>Every day</mat-radio-button>
-
-    <mat-radio-button>
-      Every &nbsp;<input class="frequency-input" type="number" />&nbsp; days
+  <mat-radio-group mat-dialog-actions class="frequency-dialog-container" [(ngModel)]="selectedFrequency">
+    <mat-radio-button value="1">Every day</mat-radio-button>
+    <mat-radio-button value="2">
+      Every &nbsp;<input [formControl]="perDays" class="frequency-input" type="number" (click)="selectedFrequency='2'" />&nbsp; days
     </mat-radio-button>
-
-    <mat-radio-button>
-      <input class="frequency-input" type="number" />&nbsp; times per week
+    <mat-radio-button value="3">
+      <input [formControl]="perWeek" class="frequency-input" type="number" (click)="selectedFrequency='3'" />&nbsp; times per week
     </mat-radio-button>
-
-    <mat-radio-button>
-      <input class="frequency-input" type="number" />&nbsp; times per month
+    <mat-radio-button value="4">
+      <input [formControl]="perMonth" class="frequency-input" type="number" (click)="selectedFrequency='4'" />&nbsp; times per month
     </mat-radio-button>
   </mat-radio-group>
+  <button mat-button [mat-dialog-close]="data" (click)="onSaveClick()">Save</button>
 </div>

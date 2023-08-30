@@ -17,8 +17,8 @@ export class HabitCreateComponent implements OnInit {
   public form!: FormGroup;
   public habit!: Habit;
   public habits: Habit[] = [];
-  public habitType?: number;
   public selectedFrequency!: string;
+  public position!: number;
 
   constructor(
     private habitService: HabitService,
@@ -41,9 +41,10 @@ export class HabitCreateComponent implements OnInit {
       unit: [''],
       targetValue: ['', [Validators.required, Validators.min(0)]],
       frequency: [''],
-      reminderTime: [''],
-      reminderDays: [''],
-      notes: ['']
+      // For later implementation
+      // reminderTime: [''],
+      // reminderDays: [''],
+      description: ['']
     });
   }
 
@@ -51,15 +52,17 @@ export class HabitCreateComponent implements OnInit {
     const idParam = this.route.snapshot.paramMap.get('id');
     const habitFound = this.habits.find(h => h.id === idParam);
     if (habitFound) {
-      console.log(habitFound);
       this.habit = habitFound;
+      this.position = this.habit.position;
     } else {
-      this.initializeHabitForCreation(Number(idParam));
+      this.initializeHabitForCreation();
+      const maxPosition = this.habits.reduce((prev, current) => (prev.position > current.position) ? prev : current).position;
+      this.habit.position = maxPosition + 1;
     }
     this.selectedFrequency = this.getFreqMsg(this.habit.type, this.habit.frequencyDensity, this.habit.frequencyNumber);
 
     if (idParam == undefined) {
-      this.habitType = 0;
+      this.habit.type = 0;
       this.title = "Create habit";
       this.form.controls['color'].patchValue(this.colors[0]);
       this.form.controls['frequency'].patchValue(this.selectedFrequency);
@@ -69,9 +72,9 @@ export class HabitCreateComponent implements OnInit {
     if (idParam!.length === 1) {
       this.title = "Create habit";
       if (idParam === '1') {
-        this.habitType = 1;
+        this.habit.type = 1;
+        this.habit.isMeasurable = true;
       } else {
-        this.habitType = 0;
         this.form.controls['targetValue'].patchValue(0);
       }      
       this.form.controls['color'].patchValue(this.colors[0]);
@@ -80,18 +83,16 @@ export class HabitCreateComponent implements OnInit {
     }
 
     if (idParam!.length > 1 && this.habit.id != '0') {
-      this.habitType = this.habit.type;
       this.title = "Edit - " + this.habit.name;
       this.form.patchValue(this.habit);
       this.form.controls['color'].patchValue(this.colors[this.habit.color]);
       this.form.controls['frequency'].patchValue(this.selectedFrequency);
-
     }
   }
 
-  initializeHabitForCreation(habitType: number) {
+  initializeHabitForCreation() {
     this.habit = {
-      id: '0',
+      id: '-1',
       isArchived: false,
       color: 1,
       description: '',
@@ -99,11 +100,11 @@ export class HabitCreateComponent implements OnInit {
       frequencyNumber: 1,
       highlight: 0,
       name: '',
-      position: habitType === 1 ? 1 : 0,
-      reminderTime: new Date("0001-01-01T00:00:00"),
+      position: 0,
+      reminderTime: new Date(Date.UTC(1, 1, 1, 0, 0, 0, 0)),
       reminderDays: 0,
       isMeasurable: false,
-      type: habitType,
+      type: 0,
       targetType: 0,
       targetValue: 0,
       unit: '',
@@ -120,11 +121,16 @@ export class HabitCreateComponent implements OnInit {
 
   frequencyDialog() {
     const dialogRef = this.dialog.open(FrequencyDialogComponent, {
-      data: { freqDen: this.habit.frequencyDensity, freqNum: this.habit.frequencyNumber }
+      data: { freqDen: this.habit.frequencyDensity, freqNum: this.habit.frequencyNumber },
+      autoFocus: '__non_existing_element__'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+    dialogRef.afterClosed().subscribe(data => {
+      if (!data) { return; }
+      this.habit.frequencyDensity = data.freqDen;
+      this.habit.frequencyNumber = data.freqNum;
+      this.selectedFrequency = this.getFreqMsg(0, this.habit.frequencyDensity, this.habit.frequencyNumber);
+      this.form.controls['frequency'].patchValue(this.selectedFrequency);
     });
   }
 
@@ -162,7 +168,6 @@ export class HabitCreateComponent implements OnInit {
           break;
 
         case 30:
-        case 31:
           switch (freqDen) {
             case 30:
               frequency = 'Every day';
@@ -200,7 +205,36 @@ export class HabitCreateComponent implements OnInit {
   }
 
   onSubmit() {
-
+    this.habit.name = this.form.controls['name'].value;
+    this.habit.color = this.colors.indexOf(this.form.controls['color'].value);
+    this.habit.question = this.form.controls['question'].value;
+    this.habit.unit = this.form.controls['unit'].value;
+    this.habit.targetValue = this.form.controls['targetValue'].value;
+    if (this.habit.type === 1) {
+      switch (this.selectedFrequency) {
+        case "Every day":
+          this.habit.frequencyDensity = 1;
+          break;
+        case "Every week":
+          this.habit.frequencyDensity = 7;
+          break;
+        case "Every month":
+          this.habit.frequencyDensity = 30;
+          break;
+      }
+    }
+    this.habit.description = this.form.controls['description'].value;
+    
+    if (this.habit.id === '-1') {
+      this.habitService.post(this.habit).subscribe(result => {
+        console.log("Habit created with id: " + result.id);
+        this.router.navigate(['/habits']);
+      }, error => console.log(error));
+    } else {
+      this.habitService.put(this.habit).subscribe(() => { }, error => console.log(error));
+      console.log("Habit updated.");
+      this.router.navigate(['/habits']);
+    }
   }
 
   public colors: string[] = [
@@ -223,8 +257,7 @@ export class HabitCreateComponent implements OnInit {
     '#bbaaa3',
     '#f4f4f4',
     '#dfdfdf',
-    '#9d9d9d',
-    '#ed9999'
+    '#9d9d9d'
   ];
 
 }

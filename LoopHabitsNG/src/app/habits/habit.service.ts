@@ -29,7 +29,7 @@ export class HabitService extends BaseService<Habit> {
   }
 
   post(item: Habit): Observable<Habit> {
-    const url = this.getUrl("api/habits/");
+    const url = this.getUrl("api/habits");
     return this.http.post<Habit>(url, item);
   }
 
