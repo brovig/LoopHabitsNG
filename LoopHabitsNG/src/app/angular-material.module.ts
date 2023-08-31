@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { MatRadioModule } from '@angular/material/radio';
     MatSelectModule,
     MatDialogModule,
     MatChipsModule,
-    MatRadioModule
+    MatRadioModule,
+    MatMenuModule,
   ],
   exports: [
     MatButtonModule,
@@ -36,7 +38,8 @@ import { MatRadioModule } from '@angular/material/radio';
     MatSelectModule,
     MatDialogModule,
     MatChipsModule,
-    MatRadioModule
+    MatRadioModule,
+    MatMenuModule
   ]
 })
 export class AngularMaterialModule { }

@@ -1,6 +1,6 @@
-<header>
+<header *ngIf="activeComponent === 'HabitsComponent'">
   <mat-toolbar color="primary">
-    <div>
+    <div class="title">
       <a [routerLink]="['/habits']">Habits</a>
     </div>
     
@@ -9,9 +9,50 @@
     <button mat-icon-button (click)="addHabit()">
       <mat-icon>add</mat-icon>
     </button>
-    <button mat-icon-button (click)="settings()">
+  </mat-toolbar>
+</header>
+
+
+<header *ngIf="activeComponent === 'HabitDetailsComponent' && habit">
+  <mat-toolbar color="primary" style="padding: 0px 16px 0px 0px">
+    <div>
+      <button mat-icon-button [routerLink]="['/habits']">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    <div class="title">
+      {{habit.name}}
+    </div>
+
+    <span class="separator"></span>
+
+    <button mat-icon-button [routerLink]="['/habit', habit.id]">
+        <mat-icon>edit</mat-icon>
+    </button>
+    
+    <button mat-icon-button [matMenuTriggerFor]="menu">
       <mat-icon>more_vert</mat-icon>
     </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="deleteHabit()">Delete habit</button>
+    </mat-menu>
+  </mat-toolbar>
+</header>
 
+
+<header *ngIf="activeComponent === 'HabitCreateComponent'">
+  <mat-toolbar color="primary" style="padding: 0px 16px 0px 0px">
+    <div>
+      <button mat-icon-button [routerLink]="['/habits']">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+
+    <div class="title" *ngIf="habit && habit.id != '-1'">
+      Edit {{habit.name}}
+    </div> 
+    <div class="title" *ngIf="habit && habit.id == '-1'">
+      Create habit
+    </div>
   </mat-toolbar>
 </header>

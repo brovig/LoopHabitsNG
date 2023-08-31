@@ -13,6 +13,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HabitTypeChooseComponent } from './habits/habit-type-choose.component';
 import { HabitCreateComponent } from './habit-create/habit-create.component';
 import { FrequencyDialogComponent } from './habit-create/frequency-dialog.component';
+import { HabitDetailsComponent } from './habit-details/habit-details.component';
+import { HabitDeleteDialogComponent } from './nav-menu/habit-delete-dialog.component';
 
 
 @NgModule({
@@ -23,7 +25,9 @@ import { FrequencyDialogComponent } from './habit-create/frequency-dialog.compon
     RepEditComponent,
     HabitTypeChooseComponent,
     HabitCreateComponent,
-    FrequencyDialogComponent
+    FrequencyDialogComponent,
+    HabitDetailsComponent,
+    HabitDeleteDialogComponent
   ],
   imports: [
     BrowserModule,

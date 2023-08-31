@@ -1,5 +1,5 @@
+<app-nav-menu [habit]="habit" *ngIf="habit"></app-nav-menu>
 <div class="habit-create">
-  <h2>{{title}}</h2>
   <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="this.habit">
 
     <mat-form-field class="form-name">

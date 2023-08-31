@@ -13,7 +13,6 @@ import { FrequencyDialogComponent } from './frequency-dialog.component';
   styleUrls: ['./habit-create.component.scss']
 })
 export class HabitCreateComponent implements OnInit {
-  public title!: string;
   public form!: FormGroup;
   public habit!: Habit;
   public habits: Habit[] = [];
@@ -63,14 +62,12 @@ export class HabitCreateComponent implements OnInit {
 
     if (idParam == undefined) {
       this.habit.type = 0;
-      this.title = "Create habit";
       this.form.controls['color'].patchValue(this.colors[0]);
       this.form.controls['frequency'].patchValue(this.selectedFrequency);
       return;
     }
 
     if (idParam!.length === 1) {
-      this.title = "Create habit";
       if (idParam === '1') {
         this.habit.type = 1;
         this.habit.isMeasurable = true;
@@ -83,7 +80,6 @@ export class HabitCreateComponent implements OnInit {
     }
 
     if (idParam!.length > 1 && this.habit.id != '0') {
-      this.title = "Edit - " + this.habit.name;
       this.form.patchValue(this.habit);
       this.form.controls['color'].patchValue(this.colors[this.habit.color]);
       this.form.controls['frequency'].patchValue(this.selectedFrequency);
@@ -231,9 +227,10 @@ export class HabitCreateComponent implements OnInit {
         this.router.navigate(['/habits']);
       }, error => console.log(error));
     } else {
-      this.habitService.put(this.habit).subscribe(() => { }, error => console.log(error));
-      console.log("Habit updated.");
-      this.router.navigate(['/habits']);
+      this.habitService.put(this.habit).subscribe(() => {
+        console.log("Habit updated.");
+        this.router.navigate(['/habits']);
+      }, error => console.log(error));
     }
   }
 
