@@ -1,2 +1,60 @@
 <app-nav-menu [habit]="currentHabit" *ngIf="currentHabit"></app-nav-menu>
-<p>habit-details works!</p>
+<ng-container *ngIf="currentHabit">
+  <!--Some basic info-->
+  <mat-card class="header-info">
+    <div class="header-info-item" *ngIf="currentHabit.targetValue">
+      <mat-icon>arrow_circle_up</mat-icon>
+      {{currentHabit.targetValue}}
+    </div>
+    <div class="header-info-item">
+      <mat-icon>calendar_month</mat-icon>
+      {{this.getFreqMsg(currentHabit.frequencyDensity, currentHabit.frequencyNumber)}}
+    </div>
+  </mat-card>
+  <!--Overview-->
+  <mat-card>
+    <mat-card-header>Overview</mat-card-header>
+    <mat-card-content>
+      ...
+    </mat-card-content>
+  </mat-card>
+  <!--Score-->
+  <mat-card>
+    <mat-card-header>Score</mat-card-header>
+    <mat-card-content>
+      ...
+    </mat-card-content>
+  </mat-card>
+  <!--History-->
+  <mat-card>
+    <mat-card-header>History</mat-card-header>
+    <mat-card-content>
+      ...
+    </mat-card-content>
+  </mat-card>
+  <!--Calendar-->
+  <mat-card>
+    <mat-card-header>Calendar</mat-card-header>
+    <mat-card-content>
+      ...
+    </mat-card-content>
+  </mat-card>
+  <!--Best streaks-->
+  <mat-card>
+    <mat-card-header>Best streaks</mat-card-header>
+    <mat-card-content>
+      ...
+    </mat-card-content>
+  </mat-card>
+  <!--Frequency-->
+  <mat-card>
+    <mat-card-header>Frequency</mat-card-header>
+    <mat-card-content>
+      ...
+    </mat-card-content>
+  </mat-card>
+  <div style="text-align: center; color: grey">
+    Detailed statistics will be implemented later
+  </div>
+</ng-container>
+

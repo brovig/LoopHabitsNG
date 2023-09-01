@@ -11,6 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatChipsModule,
     MatRadioModule,
     MatMenuModule,
+    MatCardModule
   ],
   exports: [
     MatButtonModule,
@@ -39,7 +41,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatDialogModule,
     MatChipsModule,
     MatRadioModule,
-    MatMenuModule
+    MatMenuModule,
+    MatCardModule
   ]
 })
 export class AngularMaterialModule { }

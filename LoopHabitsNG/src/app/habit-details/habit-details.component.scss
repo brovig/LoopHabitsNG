@@ -1,0 +1,28 @@
+.header-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 40px;
+  background-color: #424242;
+}
+
+.header-info-item {
+  display: flex;
+  padding: 0px 6px;
+  color: lightgrey;
+  align-items: center;
+}
+
+mat-card {
+  margin: 2px 0px;
+}
+
+mat-card-header {
+    color: lightgrey;
+}
+
+mat-card-content {
+  display: flex;
+  justify-content: flex-start;
+  color: lightgrey;
+}

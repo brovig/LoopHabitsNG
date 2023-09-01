@@ -8,10 +8,15 @@ th {
   font-size: 10px;
   padding: 0px 0px;
   color: lightgrey;
+  line-height: 15px;
 }
 
 td {
   padding: 0px 0px;
+}
+
+tr {
+  height: 40px;
 }
 
 .mat-column-name {
