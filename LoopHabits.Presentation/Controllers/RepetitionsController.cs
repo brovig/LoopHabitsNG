@@ -1,4 +1,5 @@
 ﻿using LoopHabits.Presentation.ActionFilters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
@@ -8,6 +9,7 @@ namespace LoopHabits.Presentation.Controllers;
 
 [Route("api/habits/{habitId}/repetitions")]
 [ApiController]
+[Authorize]
 public class RepetitionsController : ControllerBase
 {
     private readonly IServiceManager _service;

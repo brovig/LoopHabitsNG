@@ -1,4 +1,5 @@
 ﻿using LoopHabits.Presentation.ActionFilters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
@@ -7,6 +8,7 @@ namespace LoopHabits.Presentation.Controllers;
 
 [Route("api/habits")]
 [ApiController]
+[Authorize]
 public class HabitsController : ControllerBase
 {
     private readonly IServiceManager _service;
