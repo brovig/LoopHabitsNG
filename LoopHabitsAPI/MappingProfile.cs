@@ -31,5 +31,7 @@ public class MappingProfile: Profile
         
         CreateMap<HabitForUpdateDto, Habit>();
         CreateMap<RepetitionForUpdateDto, Repetition>();
+
+        CreateMap<UserForRegistrationDto, User>();
     }
 }

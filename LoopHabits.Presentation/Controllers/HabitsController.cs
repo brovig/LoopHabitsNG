@@ -1,4 +1,4 @@
-﻿using CompanyEmployees.Presentation.ActionFilters;
+﻿using LoopHabits.Presentation.ActionFilters;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;

@@ -1,5 +1,5 @@
 using CompanyEmployees.Extensions;
-using CompanyEmployees.Presentation.ActionFilters;
+using LoopHabits.Presentation.ActionFilters;
 using Contracts;
 using LoopHabitsAPI.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +27,8 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<ValidationFilterAttribute>();
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity();
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -62,6 +64,7 @@ app.UseStaticFiles();
 
 app.UseCors("CorsPolicy");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
