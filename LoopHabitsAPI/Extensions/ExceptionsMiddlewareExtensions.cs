@@ -3,7 +3,7 @@ using Entities.ErrorModel;
 using Entities.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace CompanyEmployees.Extensions
+namespace LoopHabitsAPI.Extensions
 {
     public static class ExceptionsMiddlewareExtensions
     {

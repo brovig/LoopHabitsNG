@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Repository;
@@ -11,9 +12,11 @@ using Repository;
 namespace LoopHabitsAPI.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20230902205718_AdditionalUserFieldsForRefreshToken")]
+    partial class AdditionalUserFieldsForRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,13 +209,13 @@ namespace LoopHabitsAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "86396140-c87a-42fc-bb86-c7df4855e9d5",
+                            Id = "eb8197a2-7017-4fd5-975b-7f6383138bbb",
                             Name = "RegisteredUser",
                             NormalizedName = "REGISTEREDUSER"
                         },
                         new
                         {
-                            Id = "a7e487b3-0cde-4e93-8851-321a638199df",
+                            Id = "a1992d7f-89eb-42f5-b982-df60981fcb63",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });

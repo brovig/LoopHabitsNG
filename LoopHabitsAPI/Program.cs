@@ -1,7 +1,6 @@
-using CompanyEmployees.Extensions;
+using LoopHabitsAPI.Extensions;
 using LoopHabits.Presentation.ActionFilters;
 using Contracts;
-using LoopHabitsAPI.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
