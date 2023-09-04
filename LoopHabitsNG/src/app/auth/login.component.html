@@ -1,0 +1,23 @@
+<app-nav-menu></app-nav-menu>
+<div class="login">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <mat-form-field>
+      <mat-label>Email:</mat-label>
+      <input matInput formControlName="email" required placeholder="Insert email" />
+      <mat-error *ngIf="form.controls['email'].errors?.['required']">Email address is required</mat-error>
+      <mat-error *ngIf="form.controls['email'].errors?.['email']">Must be a valid email address</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Password:</mat-label>
+      <input matInput formControlName="password" required placeholder="Insert password" />
+      <mat-error *ngIf="form.controls['password'].errors?.['required']">Password is required</mat-error>
+    </mat-form-field>
+
+    <div>
+      <button mat-flat-button color="primary" type="submit" [disabled]="!form.valid">Login</button>
+      <button mat-flat-button color="secondary" (click)="cancel($event)">Cancel</button>
+    </div>
+  </form>
+</div>

@@ -1,3 +1,15 @@
+<header *ngIf="activeComponent === 'LoginComponent'">
+  <mat-toolbar color="primary" style="padding: 0px 16px 0px 0px">
+    <button mat-icon-button [routerLink]="['/habits']">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="title">
+      Login
+    </div>
+  </mat-toolbar>
+</header>
+
+
 <header *ngIf="activeComponent === 'HabitsComponent'">
   <mat-toolbar color="primary">
     <div class="title">
@@ -6,9 +18,20 @@
     
     <span class="separator"></span>
 
-    <button mat-icon-button (click)="addHabit()">
-      <mat-icon>add</mat-icon>
-    </button>
+    <button *ngIf="!isLoggedIn" mat-flat-button color="primary" [routerLink]="['/login']">Login</button>
+
+    <div *ngIf="isLoggedIn">
+      <button mat-icon-button (click)="addHabit()">
+        <mat-icon>add</mat-icon>
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onLogout()">Logout</button>
+      </mat-menu>
+    </div>    
+    
   </mat-toolbar>
 </header>
 

@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -15,6 +15,8 @@ import { HabitCreateComponent } from './habit-create/habit-create.component';
 import { FrequencyDialogComponent } from './habit-create/frequency-dialog.component';
 import { HabitDetailsComponent } from './habit-details/habit-details.component';
 import { HabitDeleteDialogComponent } from './nav-menu/habit-delete-dialog.component';
+import { LoginComponent } from './auth/login.component';
+import { AuthInterceptor } from './auth/auth.interceptor';
 
 
 @NgModule({
@@ -27,7 +29,8 @@ import { HabitDeleteDialogComponent } from './nav-menu/habit-delete-dialog.compo
     HabitCreateComponent,
     FrequencyDialogComponent,
     HabitDetailsComponent,
-    HabitDeleteDialogComponent
+    HabitDeleteDialogComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +41,12 @@ import { HabitDeleteDialogComponent } from './nav-menu/habit-delete-dialog.compo
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

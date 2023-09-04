@@ -8,6 +8,8 @@ import { RepetitionService } from './repetition.service';
 import { Repetition } from './repetition';
 import { MatDialog } from '@angular/material/dialog';
 import { RepEditComponent } from './rep-edit.component';
+import { AuthService } from '../auth/auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-habits',
@@ -22,11 +24,15 @@ export class HabitsComponent implements OnInit {
   public displayedDates: string[] = [];
   public numberOfDaysToDisplay!: number;
   public screenWidth!: number;
+  public authStatus$: Observable<boolean>;
 
-  constructor(private router: Router,
+  constructor(
+    private authService: AuthService,
+    private router: Router,
     private habitService: HabitService,
     private repetitionService: RepetitionService,
     private dialog: MatDialog) {
+    this.authStatus$ = this.authService.authStatus;
   }
 
   ngOnInit() {
