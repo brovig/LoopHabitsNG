@@ -42,4 +42,8 @@ public class Habit
     public string? Question { get; set; }
 
     public ICollection<Repetition>? Repetitions { get; set; }
+
+    [ForeignKey(nameof(User))]
+    public string? UserId { get; set; }
+    public User? User { get; set; }
 }

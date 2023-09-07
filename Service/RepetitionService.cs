@@ -21,9 +21,9 @@ internal sealed class RepetitionService : IRepetitionService
         _mapper = mapper;
     }
 
-    public async Task<RepetitionDto> CreateRepetitionAsync(Guid habitId, RepetitionForCreationDto repetitionForCreation, bool trackChanges)
+    public async Task<RepetitionDto> CreateRepetitionAsync(string userId, Guid habitId, RepetitionForCreationDto repetitionForCreation, bool trackChanges)
     {
-        await CheckIfHabitExists(habitId, trackChanges);
+        await CheckIfHabitExists(userId, habitId, trackChanges);
 
         var repetitionEntity = _mapper.Map<Repetition>(repetitionForCreation);
 
@@ -34,20 +34,20 @@ internal sealed class RepetitionService : IRepetitionService
         return repetitionToReturn;
     }
 
-    public async Task<IEnumerable<RepetitionDto>> CreateRepetitionCollectionAsync(Guid habitId, IEnumerable<RepetitionForCreationDto> repetitionsForCreation, bool trackChanges)
+    public async Task<IEnumerable<RepetitionDto>> CreateRepetitionCollectionAsync(string userId, Guid habitId, IEnumerable<RepetitionForCreationDto> repetitionsForCreation, bool trackChanges)
     {
         var result = new List<RepetitionDto>();
         foreach(var repetition in repetitionsForCreation)
         {
-            var addedRepetition = await CreateRepetitionAsync(habitId, repetition, trackChanges: false);
+            var addedRepetition = await CreateRepetitionAsync(userId, habitId, repetition, trackChanges: false);
             result.Add(addedRepetition);
         }
         return result;
     }
 
-    public async Task<IEnumerable<RepetitionDto>> GetRepetitionsAsync(Guid habitId, RepetitionParameters repetitionParameters, bool trackChanges)
+    public async Task<IEnumerable<RepetitionDto>> GetRepetitionsAsync(string userId, Guid habitId, RepetitionParameters repetitionParameters, bool trackChanges)
     {
-        await CheckIfHabitExists(habitId, trackChanges);
+        await CheckIfHabitExists(userId, habitId, trackChanges);
 
         var repetitions = await _repository.Repetition.GetRepetitionsAsync(habitId, repetitionParameters, trackChanges);
 
@@ -55,9 +55,9 @@ internal sealed class RepetitionService : IRepetitionService
         return repetitionsDto;
     }
 
-    public async Task<RepetitionDto> GetRepetitionAsync(Guid habitId, int id, bool trackChanges)
+    public async Task<RepetitionDto> GetRepetitionAsync(string userId, Guid habitId, int id, bool trackChanges)
     {
-        await CheckIfHabitExists(habitId, trackChanges);
+        await CheckIfHabitExists(userId, habitId, trackChanges);
 
         var repetitionEntity = await GetRepetitionAndCheckIfItExists(habitId, id, trackChanges);
 
@@ -65,9 +65,9 @@ internal sealed class RepetitionService : IRepetitionService
         return repetitionDto;
     }
 
-    public async Task UpdateRepetitionAsync(Guid habitId, int id, RepetitionForUpdateDto repetitionForUpdate, bool habitTrackChanges, bool repetitionTrackChanges)
+    public async Task UpdateRepetitionAsync(string userId, Guid habitId, int id, RepetitionForUpdateDto repetitionForUpdate, bool habitTrackChanges, bool repetitionTrackChanges)
     {
-        await CheckIfHabitExists(habitId, habitTrackChanges);
+        await CheckIfHabitExists(userId, habitId, habitTrackChanges);
 
         var repetitionEntity = await GetRepetitionAndCheckIfItExists(habitId, id, repetitionTrackChanges);
 
@@ -75,9 +75,9 @@ internal sealed class RepetitionService : IRepetitionService
         await _repository.SaveAsync();
     }
 
-    public async Task DeleteRepetitionAsync(Guid habitId, int id, bool trackChanges)
+    public async Task DeleteRepetitionAsync(string userId, Guid habitId, int id, bool trackChanges)
     {
-        await CheckIfHabitExists(habitId, trackChanges);
+        await CheckIfHabitExists(userId, habitId, trackChanges);
 
         var repetition = await GetRepetitionAndCheckIfItExists(habitId, id, trackChanges);
         _repository.Repetition.DeleteRepetition(repetition);
@@ -86,10 +86,10 @@ internal sealed class RepetitionService : IRepetitionService
 
 
     // helper methods
-    private async Task CheckIfHabitExists(Guid habitId, bool trackChanges)
+    private async Task CheckIfHabitExists(string userId, Guid habitId, bool trackChanges)
     {
         var habit = await _repository.Habit.GetHabitAsync(habitId, trackChanges);
-        if (habit is null)
+        if (habit is null || habit.UserId != userId)
             throw new HabitNotFoundException(habitId);
     }
 

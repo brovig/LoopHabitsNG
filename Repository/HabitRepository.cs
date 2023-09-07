@@ -11,9 +11,9 @@ public class HabitRepository : RepositoryBase<Habit>, IHabitRepository
     }
 
 
-    public async Task<IEnumerable<Habit>> GetAllHabitsAsync(bool trackChanges)
+    public async Task<IEnumerable<Habit>> GetAllHabitsAsync(string userId, bool trackChanges)
     {
-        return await FindAll(trackChanges).OrderBy(p => p.Position).ToListAsync();
+        return await FindByCondition(h => h.UserId.Equals(userId), trackChanges).OrderBy(p => p.Position).ToListAsync();
     }
 
     public async Task<IEnumerable<Habit>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges)

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
+using System.Net;
 
 namespace LoopHabits.Presentation.Controllers;
 
@@ -20,39 +21,49 @@ public class RepetitionsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetRepetitions(Guid habitId, [FromQuery] RepetitionParameters repetitionParameters)
+    public async Task<IActionResult> GetRepetitions(Guid habitId, [FromQuery] RepetitionParameters repetitionParameters, [FromHeader] string authorization)
     {
-        var repetitions = await _service.RepetitionService.GetRepetitionsAsync(habitId, repetitionParameters, trackChanges: false);
+        var userId = await _service.AuthenticationService.GetUserId(authorization);
+
+        var repetitions = await _service.RepetitionService.GetRepetitionsAsync(userId, habitId, repetitionParameters, trackChanges: false);
         return Ok(repetitions);
     }
 
     [HttpGet("{id:int}", Name = "GetRepetitionForHabit")]
-    public async Task<IActionResult> GetRepetition(Guid habitId, int id)
+    public async Task<IActionResult> GetRepetition(Guid habitId, int id, [FromHeader] string authorization)
     {
-        var repetition = await _service.RepetitionService.GetRepetitionAsync(habitId, id, trackChanges: false);
+        var userId = await _service.AuthenticationService.GetUserId(authorization);
+
+        var repetition = await _service.RepetitionService.GetRepetitionAsync(userId, habitId, id, trackChanges: false);
         return Ok(repetition);
     }
 
     [HttpPost]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<IActionResult> CreateRepetition(Guid habitId, [FromBody] RepetitionForCreationDto repetition)
+    public async Task<IActionResult> CreateRepetition(Guid habitId, [FromBody] RepetitionForCreationDto repetition, [FromHeader] string authorization)
     {
-        var repetitionToReturn = await _service.RepetitionService.CreateRepetitionAsync(habitId, repetition, trackChanges: false);
+        var userId = await _service.AuthenticationService.GetUserId(authorization);
+
+        var repetitionToReturn = await _service.RepetitionService.CreateRepetitionAsync(userId, habitId, repetition, trackChanges: false);
         return CreatedAtRoute("GetRepetitionForHabit", new { habitId, id = repetitionToReturn.Id }, repetitionToReturn);
     }
 
     [HttpPut("{id:int}")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<IActionResult> UpdateRepetition(Guid habitId, int id, [FromBody] RepetitionForUpdateDto repetition)
+    public async Task<IActionResult> UpdateRepetition(Guid habitId, int id, [FromBody] RepetitionForUpdateDto repetition, [FromHeader] string authorization)
     {
-        await _service.RepetitionService.UpdateRepetitionAsync(habitId, id, repetition, habitTrackChanges: false, repetitionTrackChanges: true);
+        var userId = await _service.AuthenticationService.GetUserId(authorization);
+
+        await _service.RepetitionService.UpdateRepetitionAsync(userId, habitId, id, repetition, habitTrackChanges: false, repetitionTrackChanges: true);
         return NoContent();
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> DeleteRepetition(Guid habitId, int id)
+    public async Task<IActionResult> DeleteRepetition(Guid habitId, int id, [FromHeader] string authorization)
     {
-        await _service.RepetitionService.DeleteRepetitionAsync(habitId, id, trackChanges: false);
+        var userId = await _service.AuthenticationService.GetUserId(authorization);
+
+        await _service.RepetitionService.DeleteRepetitionAsync(userId, habitId, id, trackChanges: false);
         return NoContent();
     }
 }

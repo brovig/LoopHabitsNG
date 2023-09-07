@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using System.Net;
 
 namespace LoopHabits.Presentation.Controllers;
 
@@ -19,39 +20,50 @@ public class HabitsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetHabits()
+    public async Task<IActionResult> GetHabits([FromHeader] string authorization)
     {
-        var habits = await _service.HabitService.GetAllHabitsAsync(trackChanges: false);
+        var userId = await _service.AuthenticationService.GetUserId(authorization);
+
+        var habits = await _service.HabitService.GetAllHabitsAsync(userId, trackChanges: false);
         return Ok(habits);
     }
 
     [HttpGet("{id:guid}", Name = "HabitById")]
-    public async Task<IActionResult> GetHabit(Guid id)
+    public async Task<IActionResult> GetHabit(Guid id, [FromHeader] string authorization)
     {
-        var habit = await _service.HabitService.GetHabitAsync(id, trackChanges: false);
+        var userId = await _service.AuthenticationService.GetUserId(authorization);
+
+        var habit = await _service.HabitService.GetHabitAsync(userId, id, trackChanges: false);
+
         return Ok(habit);
     }
 
     [HttpPost]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<IActionResult> CreateHabit([FromBody] HabitForCreationDto habit)
+    public async Task<IActionResult> CreateHabit([FromBody] HabitForCreationDto habit, [FromHeader] string authorization)
     {
-        var createdHabit = await _service.HabitService.CreateHabitAsync(habit);
+        var userId = await _service.AuthenticationService.GetUserId(authorization);
+
+        var createdHabit = await _service.HabitService.CreateHabitAsync(userId, habit);
         return CreatedAtRoute("HabitById", new { id = createdHabit.Id }, createdHabit);
     }
        
     [HttpPut("{id:guid}")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<IActionResult> UpdateHabit(Guid id, [FromBody] HabitForUpdateDto habit)
+    public async Task<IActionResult> UpdateHabit(Guid id, [FromBody] HabitForUpdateDto habit, [FromHeader] string authorization)
     {
-        await _service.HabitService.UpdateHabitAsync(id, habit, trackChanges: true);
+        var userId = await _service.AuthenticationService.GetUserId(authorization);
+
+        await _service.HabitService.UpdateHabitAsync(userId, id, habit, trackChanges: true);
         return NoContent();
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteHabit(Guid id)
+    public async Task<IActionResult> DeleteHabit(Guid id, [FromHeader] string authorization)
     {
-        await _service.HabitService.DeleteHabitAsync(id, trackChanges: false);
+        var userId = await _service.AuthenticationService.GetUserId(authorization);
+
+        await _service.HabitService.DeleteHabitAsync(userId, id, trackChanges: false);
         return NoContent();
     }
 }

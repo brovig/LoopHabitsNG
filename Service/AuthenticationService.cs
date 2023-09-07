@@ -86,7 +86,7 @@ internal sealed class AuthenticationService : IAuthenticationService
 
     public async Task<TokenDto> RefreshToken(TokenDto tokenDto)
     {
-        var principal = GetPrincipalFromExpiredToken(tokenDto.AccessToken);
+        var principal = GetPrincipalFromToken(tokenDto.AccessToken);
 
         var user = await _userManager.FindByEmailAsync(principal.FindFirstValue(ClaimTypes.Email));
         if (user == null || user.RefreshToken != tokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
@@ -97,6 +97,18 @@ internal sealed class AuthenticationService : IAuthenticationService
         return await CreateToken(populateExp: false);
     }
 
+    public async Task<string> GetUserId(string authorizationHeader)
+    {
+        string token = authorizationHeader.Split(' ')[1];
+        var principal = GetPrincipalFromToken(token);
+        var user = await _userManager.FindByEmailAsync(principal.FindFirstValue(ClaimTypes.Email));
+
+        if (user == null)
+            throw new UserNotFoundException();
+
+        string userId = user.Id;
+        return userId;
+    }
 
 
     private SigningCredentials GetSigningCredentials()
@@ -149,7 +161,7 @@ internal sealed class AuthenticationService : IAuthenticationService
         }
     }
 
-    private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+    private ClaimsPrincipal GetPrincipalFromToken(string token)
     {
         var jwtSettings = _configuration.GetSection("JwtSettings");
 
@@ -175,5 +187,5 @@ internal sealed class AuthenticationService : IAuthenticationService
         }
 
         return principal;
-    }
+    }    
 }
