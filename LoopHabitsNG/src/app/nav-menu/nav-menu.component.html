@@ -6,6 +6,21 @@
     <div class="title">
       Login
     </div>
+
+    <span class="separator"></span>
+
+    <button mat-flat-button color="primary" [routerLink]="['/register']">Create account</button>
+  </mat-toolbar>
+</header>
+
+<header *ngIf="activeComponent === 'RegisterComponent'">
+  <mat-toolbar color="primary" style="padding: 0px 16px 0px 0px">
+    <button mat-icon-button [routerLink]="['/login']">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="title">
+      Register
+    </div>
   </mat-toolbar>
 </header>
 
@@ -30,8 +45,7 @@
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="onLogout()">Logout</button>
       </mat-menu>
-    </div>    
-    
+    </div>        
   </mat-toolbar>
 </header>
 

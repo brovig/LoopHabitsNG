@@ -30,8 +30,12 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     }
     return next.handle(req).pipe(catchError((error) => {
-      if (error instanceof HttpErrorResponse && error.status === 401 && req.url !== 'api/authorization/refresh') {
-        return this.handle401Error(req, next);
+      if (error instanceof HttpErrorResponse
+        && error.status === 401
+        && req.url !== '/api/authentication/refresh'
+        && req.url !== '/api/authentication/login'
+        && req.url !== '/api/authentication') {
+        return this.handle401Error(req, next);        
       }
       return throwError(error);
     }));
@@ -51,7 +55,6 @@ export class AuthInterceptor implements HttpInterceptor {
         return this.authService.refresh(tokenDto).pipe(switchMap((token: any) => {
           this.isRefreshing = false;
           this.refreshTokenSubject.next(token.accessToken);
-
           return next.handle(request.clone({
             setHeaders: {
               Authorization: `Bearer ${token.accessToken}`
@@ -59,6 +62,8 @@ export class AuthInterceptor implements HttpInterceptor {
           }));
         }), catchError((err) => {
           this.isRefreshing = false;
+          this.authService.logout();
+          this.router.navigate(['login']);
           return throwError(err);
         }));
       }

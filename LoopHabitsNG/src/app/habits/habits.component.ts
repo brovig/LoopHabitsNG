@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 
 import { Habit } from './habit';
 import { HabitService } from './habit.service';
@@ -8,8 +7,6 @@ import { RepetitionService } from './repetition.service';
 import { Repetition } from './repetition';
 import { MatDialog } from '@angular/material/dialog';
 import { RepEditComponent } from './rep-edit.component';
-import { AuthService } from '../auth/auth.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-habits',
@@ -24,15 +21,11 @@ export class HabitsComponent implements OnInit {
   public displayedDates: string[] = [];
   public numberOfDaysToDisplay!: number;
   public screenWidth!: number;
-  public authStatus$: Observable<boolean>;
 
   constructor(
-    private authService: AuthService,
-    private router: Router,
     private habitService: HabitService,
     private repetitionService: RepetitionService,
     private dialog: MatDialog) {
-    this.authStatus$ = this.authService.authStatus;
   }
 
   ngOnInit() {
@@ -107,7 +100,6 @@ export class HabitsComponent implements OnInit {
             repetition.value = 2;
             this.repetitionService.post(habit.id, repetition).subscribe((result) => {
               repetition.id = result.id;
-              //this.router.navigate(['/habits']);
             });
             break;
           }

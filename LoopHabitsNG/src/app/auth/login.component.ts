@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { TokenDto } from './TokenDto';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { UserForAuth } from './UserForAuth';
-
 
 @Component({
   selector: 'app-login',
@@ -13,12 +11,11 @@ import { UserForAuth } from './UserForAuth';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  title?: string;
-  tokenDto?: TokenDto;
   form!: FormGroup;
+  hidePassword = true;
+  failedLoginAttempt = false;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private router: Router,
     private authService: AuthService) { }
 
@@ -28,18 +25,6 @@ export class LoginComponent implements OnInit {
       password: new FormControl('', Validators.required)
     })
   }
-  
-  getErrorMessage(formControl: FormControl) {
-    if (formControl.hasError('required')) {
-      return 'Cannot be blank';
-    }
-
-    if (formControl.hasError('email')) {
-      return 'Not a valid email';
-    }
-
-    return '';
-  }
 
   onSubmit() {
     const userForAuth = <UserForAuth>{};
@@ -48,15 +33,18 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(userForAuth).subscribe(result => {
       if (result) {
-        console.log('login successful');
-        console.log(result);
+        this.failedLoginAttempt = true;
         this.router.navigate(['/']);
       }
-    }, error => console.log(error));
+    }, error => {
+      if (error.status === 401) {
+        this.failedLoginAttempt = true;
+      }
+    });
   }
 
-  cancel(event: Event) {
-    event.preventDefault();
-    this.router.navigate(['/']);
-  }
+  //cancel(event: Event) {
+  //  event.preventDefault();
+  //  this.router.navigate(['/']);
+  //}
 }

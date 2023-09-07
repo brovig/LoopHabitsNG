@@ -1,10 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, tap } from 'rxjs';
+import { Observable, Subject, catchError, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 import { UserForAuth } from './UserForAuth';
 import { TokenDto } from './TokenDto';
+import { UserForReg } from './UserForReg';
 
 @Injectable({
   providedIn: 'root'
@@ -34,19 +35,28 @@ export class AuthService {
     if (this.isAuthenticated()) {
       this.setAuthStatus(true);
     }
-    console.log('auth service init');
+  }
+
+  register(item: UserForReg): Observable<UserForReg> {
+    const url = environment.baseUrl + "api/authentication";
+    return this.http.post<UserForReg>(url, item);
   }
 
   login(item: UserForAuth): Observable<TokenDto> {
     const url = environment.baseUrl + "api/authentication/login";
     return this.http.post<TokenDto>(url, item)
-      .pipe(tap(result => {
-        if (result && result.accessToken && result.refreshToken) {
-          localStorage.setItem(this.accessTokenKey, result.accessToken);
-          localStorage.setItem(this.refreshTokenKey, result.refreshToken);
-          this.setAuthStatus(true);
-        }
-      }));
+      .pipe(        
+        tap(result => {
+          if (result && result.accessToken && result.refreshToken) {
+            localStorage.setItem(this.accessTokenKey, result.accessToken);
+            localStorage.setItem(this.refreshTokenKey, result.refreshToken);
+            this.setAuthStatus(true);
+          }
+        }),
+        catchError(err => {
+          return throwError(err);
+        })
+      );
   }
 
   refresh(item: TokenDto): Observable<TokenDto> {

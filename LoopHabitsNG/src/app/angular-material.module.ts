@@ -12,6 +12,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { MatCardModule } from '@angular/material/card';
     MatChipsModule,
     MatRadioModule,
     MatMenuModule,
-    MatCardModule
+    MatCardModule,
+    MatSnackBarModule,
   ],
   exports: [
     MatButtonModule,
@@ -42,7 +44,8 @@ import { MatCardModule } from '@angular/material/card';
     MatChipsModule,
     MatRadioModule,
     MatMenuModule,
-    MatCardModule
+    MatCardModule,
+    MatSnackBarModule
   ]
 })
 export class AngularMaterialModule { }

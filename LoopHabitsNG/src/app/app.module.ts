@@ -17,6 +17,7 @@ import { HabitDetailsComponent } from './habit-details/habit-details.component';
 import { HabitDeleteDialogComponent } from './nav-menu/habit-delete-dialog.component';
 import { LoginComponent } from './auth/login.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { RegisterComponent } from './auth/register.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     FrequencyDialogComponent,
     HabitDetailsComponent,
     HabitDeleteDialogComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

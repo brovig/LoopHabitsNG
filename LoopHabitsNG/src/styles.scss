@@ -16,3 +16,10 @@ a:visited {
   color: white;
   text-decoration: none;
 }
+
+.mat-mdc-snack-bar-container {
+  &.reg-snackbar {
+    --mdc-snackbar-container-color: #c2185b;
+    --mdc-snackbar-supporting-text-color: #ffffff;
+  }
+}

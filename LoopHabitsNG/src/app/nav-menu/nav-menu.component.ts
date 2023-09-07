@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
@@ -14,9 +14,9 @@ import { AuthService } from '../auth/auth.service';
   templateUrl: './nav-menu.component.html',
   styleUrls: ['./nav-menu.component.scss']
 })
-export class NavMenuComponent {
+export class NavMenuComponent implements OnInit, OnDestroy {
   private destroySubject = new Subject();
-  public isLoggedIn?: boolean = true;
+  public isLoggedIn?: boolean = false;
   @Input() habit?: Habit;
   @Input() isAuthenticated?: boolean | null;
   public activeComponent: string | undefined;
@@ -26,16 +26,12 @@ export class NavMenuComponent {
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute) {
+    
       this.authService.authStatus.pipe(takeUntil(this.destroySubject))
         .subscribe(result => {
           console.log('Check authStatus in navmenu constructor: ' + result);
           this.isLoggedIn = result;
         });
-      //this.authService.authStatus
-      //  .subscribe(result => {
-      //    console.log('Check authStatus in navmenu constructor: ' + result);
-      //    this.isLoggedIn = result;
-      //  });
 
       const activeComp = this.route.snapshot.routeConfig?.component?.name;
       if (activeComp) {
@@ -43,6 +39,10 @@ export class NavMenuComponent {
       } else {
         this.activeComponent = "HabitsComponent";
       }
+  }
+
+  ngOnInit() {
+    this.isLoggedIn = this.authService.isAuthenticated();
   }
 
   addHabit() {
@@ -62,11 +62,10 @@ export class NavMenuComponent {
 
   onLogout() {
     this.authService.logout();
-    this.router.navigate(['/']);
+    this.router.navigate(['/']).then(() => window.location.reload());
   }
 
   ngOnDestroy() {
-    console.log('shit in navmenu destroyed');
     this.destroySubject.next(true);
     this.destroySubject.complete();
   }

@@ -35,12 +35,20 @@ internal sealed class AuthenticationService : IAuthenticationService
 
     public async Task<IdentityResult> RegisterUser(UserForRegistrationDto userForRegistration)
     {
-        var user = _mapper.Map<User>(userForRegistration);
+        var userWithDefaultRole = new UserForRegistrationDto
+        {
+            UserName = userForRegistration.UserName,
+            Email = userForRegistration.Email,
+            Password = userForRegistration.Password,
+            Roles = new List<string> { "RegisteredUser" }
+        };
 
-        var result = await _userManager.CreateAsync(user, userForRegistration.Password);
+        var user = _mapper.Map<User>(userWithDefaultRole);
+
+        var result = await _userManager.CreateAsync(user, userWithDefaultRole.Password);
 
         if (result.Succeeded)
-            await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
+            await _userManager.AddToRolesAsync(user, userWithDefaultRole.Roles);
 
         return result;
     }
@@ -151,7 +159,7 @@ internal sealed class AuthenticationService : IAuthenticationService
             ValidateIssuer = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRETLOOPHABITS"))),
-            ValidateLifetime = true,
+            ValidateLifetime = false,
             ValidIssuer = jwtSettings["ValidIssuer"],
             ValidAudience = jwtSettings["ValidAudience"]
         };
