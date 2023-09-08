@@ -22,11 +22,12 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.accessToken = this.authService.getAccessToken();    
 
-    if (this.accessToken) {
-      req = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${this.accessToken}`
-        }
+    if (this.accessToken
+      && req.url !== '/api/heartbeat') {
+        req = req.clone({
+          setHeaders: {
+            Authorization: `Bearer ${this.accessToken}`
+          }
       });
     }
     return next.handle(req).pipe(catchError((error) => {

@@ -1,3 +1,18 @@
 .container {
   color: #fafafa;
 }
+
+.alert {
+  position: fixed;
+  bottom: 0;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  text-align: center;
+  width: 100%;
+
+  &.alert-warning {
+    color: #750e37;
+    background-color: #f8bbd0;
+    border-color: #f8bbd0;
+  }
+}

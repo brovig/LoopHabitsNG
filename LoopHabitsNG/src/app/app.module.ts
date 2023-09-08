@@ -1,5 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -18,6 +18,9 @@ import { HabitDeleteDialogComponent } from './nav-menu/habit-delete-dialog.compo
 import { LoginComponent } from './auth/login.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { RegisterComponent } from './auth/register.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { ConnectionServiceModule, ConnectionServiceOptions, ConnectionServiceOptionsToken } from 'ng-connection-service';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -41,14 +44,30 @@ import { RegisterComponent } from './auth/register.component';
     AngularMaterialModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
+    ConnectionServiceModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }],
+    },
+    {
+      provide: ConnectionServiceOptionsToken,
+      useValue: <ConnectionServiceOptions>{
+        enableHeartbeat: true,
+        heartbeatUrl: environment.baseUrl + 'api/heartbeat',
+        heartbeatInterval: 2000
+      }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

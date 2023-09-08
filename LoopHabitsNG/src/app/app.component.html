@@ -1,3 +1,6 @@
 <div class="container">
   <router-outlet></router-outlet>
 </div>
+<div class="alert alert-warning" *ngIf="!isOnline">
+  The app is currently <i>offline</i>
+</div>

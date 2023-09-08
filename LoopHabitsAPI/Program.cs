@@ -69,4 +69,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapMethods("/api/heartbeat", new[] { "HEAD" }, () => Results.Ok());
+
 app.Run();
