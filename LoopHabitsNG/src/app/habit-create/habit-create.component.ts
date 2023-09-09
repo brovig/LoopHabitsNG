@@ -55,8 +55,13 @@ export class HabitCreateComponent implements OnInit {
       this.position = this.habit.position;
     } else {
       this.initializeHabitForCreation();
-      const maxPosition = this.habits.reduce((prev, current) => (prev.position > current.position) ? prev : current).position;
-      this.habit.position = maxPosition + 1;
+      if (this.habits.length != 0) {
+        const maxPosition = this.habits.reduce((prev, current) => (prev.position > current.position) ? prev : current).position;
+        this.habit.position = maxPosition + 1;
+      } else {
+        this.habit.position = 0;
+      }
+      
     }
     this.selectedFrequency = this.getFreqMsg(this.habit.type, this.habit.frequencyDensity, this.habit.frequencyNumber);
 
