@@ -1,12 +1,13 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 import { HabitTypeChooseComponent } from '../habits/habit-type-choose.component';
 import { Habit } from '../habits/habit';
 import { HabitDeleteDialogComponent } from './habit-delete-dialog.component';
 import { AuthService } from '../auth/auth.service';
+import { ShareService } from '../share.service';
 
 
 @Component({
@@ -17,32 +18,31 @@ import { AuthService } from '../auth/auth.service';
 export class NavMenuComponent implements OnInit, OnDestroy {
   private destroySubject = new Subject();
   public isLoggedIn?: boolean = false;
-  @Input() habit?: Habit;
-  @Input() isAuthenticated?: boolean | null;
-  public activeComponent: string | undefined;
+  public habit?: Habit;
+  public activeComponent!: string;
+  public activeRoute!: string;
 
   constructor(
     private authService: AuthService,
     private dialog: MatDialog,
     private router: Router,
-    private route: ActivatedRoute) {
-    
+    private shareService: ShareService) {    
       this.authService.authStatus.pipe(takeUntil(this.destroySubject))
         .subscribe(result => {
-          console.log('Check authStatus in navmenu constructor: ' + result);
           this.isLoggedIn = result;
         });
 
-      const activeComp = this.route.snapshot.routeConfig?.component?.name;
-      if (activeComp) {
-        this.activeComponent = activeComp;
-      } else {
-        this.activeComponent = "HabitsComponent";
-      }
+    this.shareService.activeComp.subscribe(result => {
+        this.activeComponent = result;
+      });
+
+    this.shareService.habit.subscribe(result => {
+      this.habit = result;
+      }); 
   }
 
   ngOnInit() {
-    this.isLoggedIn = this.authService.isAuthenticated();
+    this.isLoggedIn = this.authService.isAuthenticated();   
   }
 
   addHabit() {
@@ -68,9 +68,5 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroySubject.next(true);
     this.destroySubject.complete();
-  }
-
-  settings() {
-    console.log("settings button");
   }
 }

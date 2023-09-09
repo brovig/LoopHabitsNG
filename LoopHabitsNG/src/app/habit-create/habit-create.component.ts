@@ -6,6 +6,7 @@ import { HabitService } from '../habits/habit.service';
 import { Habit } from '../habits/habit';
 import { MatDialog } from '@angular/material/dialog';
 import { FrequencyDialogComponent } from './frequency-dialog.component';
+import { ShareService } from '../share.service';
 
 @Component({
   selector: 'app-habit-create',
@@ -24,11 +25,13 @@ export class HabitCreateComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private shareService: ShareService
   ) {
     this.habitService.getData().subscribe(data => {
       this.habits = data;
       this.loadData();
+      this.shareService.setHabit(this.habit);
     }, error => console.error(error));
   }
 

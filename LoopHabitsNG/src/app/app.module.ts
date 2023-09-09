@@ -23,8 +23,8 @@ import { ConnectionServiceModule, ConnectionServiceOptions, ConnectionServiceOpt
 import { environment } from '../environments/environment';
 
 
-@NgModule({
-  declarations: [
+export function DECLARATIONS() {
+  return [
     AppComponent,
     HabitsComponent,
     NavMenuComponent,
@@ -36,7 +36,11 @@ import { environment } from '../environments/environment';
     HabitDeleteDialogComponent,
     LoginComponent,
     RegisterComponent
-  ],
+  ]
+}
+
+@NgModule({
+  declarations: DECLARATIONS(),
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -70,4 +74,6 @@ import { environment } from '../environments/environment';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  static declarations = DECLARATIONS;
+}

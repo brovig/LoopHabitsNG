@@ -30,7 +30,7 @@
     <div class="title">
       <a [routerLink]="['/habits']">Habits</a>
     </div>
-    
+
     <span class="separator"></span>
 
     <button *ngIf="!isLoggedIn" mat-flat-button color="primary" [routerLink]="['/login']">Login</button>
@@ -45,7 +45,7 @@
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="onLogout()">Logout</button>
       </mat-menu>
-    </div>        
+    </div>
   </mat-toolbar>
 </header>
 
@@ -64,15 +64,18 @@
     <span class="separator"></span>
 
     <button mat-icon-button [routerLink]="['/habit', habit.id]">
-        <mat-icon>edit</mat-icon>
+      <mat-icon>edit</mat-icon>
     </button>
+
+    <div *ngIf="">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="deleteHabit()">Delete habit</button>
+      </mat-menu>
+    </div>
     
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="deleteHabit()">Delete habit</button>
-    </mat-menu>
   </mat-toolbar>
 </header>
 
@@ -87,7 +90,7 @@
 
     <div class="title" *ngIf="habit && habit.id != '-1'">
       Edit {{habit.name}}
-    </div> 
+    </div>
     <div class="title" *ngIf="habit && habit.id == '-1'">
       Create habit
     </div>

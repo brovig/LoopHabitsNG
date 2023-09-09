@@ -36,8 +36,7 @@
               ],
               "scripts": [],
               "serviceWorker": true,
-              "ngswConfigPath": "ngsw-config.json",
-              "aot":  true
+              "ngswConfigPath": "ngsw-config.json"
             },
             "configurations": {
               "production": {
@@ -59,7 +58,14 @@
                     "with": "src/environments/environment.prod.ts"
                   }
                 ],
-                "outputHashing": "all"
+                "optimization": true,
+                "outputHashing": "all",
+                "sourceMap": false,
+                "namedChunks": false,
+                "aot": true,
+                "extractLicenses": true,
+                "vendorChunk": false,
+                "buildOptimizer": true
               },
               "development": {
                 "buildOptimizer": false,
