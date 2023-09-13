@@ -42,9 +42,4 @@ export class LoginComponent implements OnInit {
       }
     });
   }
-
-  //cancel(event: Event) {
-  //  event.preventDefault();
-  //  this.router.navigate(['/']);
-  //}
 }

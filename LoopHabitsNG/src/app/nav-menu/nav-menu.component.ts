@@ -56,7 +56,6 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   }
 
   deleteHabit() {
-    console.log(this.habit);
     this.dialog.open(HabitDeleteDialogComponent, { data: { habitId: this.habit!.id } });
   }
 

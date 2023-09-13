@@ -41,8 +41,6 @@ export class RegisterComponent implements OnInit {
     userForReg.password = this.form.controls['password'].value;
 
     this.authService.register(userForReg).subscribe(() => {
-      
-      console.log('success reg');
       const snackBarRef = this.snackBar.open('Successful registration!', 'Login', { panelClass: ['reg-snackbar'] });
       snackBarRef.onAction().subscribe(() => {
         this.router.navigate(['/login']);

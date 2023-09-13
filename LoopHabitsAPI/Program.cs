@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using NLog;
 using Repository;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,6 +54,11 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
 var logger = app.Services.GetRequiredService<ILoggerManager>();
 app.ConfigureExceptionHandler(logger);
 
@@ -65,6 +71,8 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
+    //app.UseExceptionHandler("/Error");
+    //app.MapGet("/Error", () => Results.Problem());
     app.UseHsts(); // adds the Strict-Transport-Security header
 }
 
@@ -79,6 +87,8 @@ app.UseAuthorization();
 app.UseCors("AngularPolicy");
 
 app.MapControllers();
+
+app.MigrateDatabase();
 
 app.MapMethods("/api/heartbeat", new[] { "HEAD" }, () => Results.Ok());
 

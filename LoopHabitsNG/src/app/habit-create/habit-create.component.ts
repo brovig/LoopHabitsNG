@@ -231,12 +231,10 @@ export class HabitCreateComponent implements OnInit {
     
     if (this.habit.id === '-1') {
       this.habitService.post(this.habit).subscribe(result => {
-        console.log("Habit created with id: " + result.id);
         this.router.navigate(['/habits']);
       }, error => console.log(error));
     } else {
       this.habitService.put(this.habit).subscribe(() => {
-        console.log("Habit updated.");
         this.router.navigate(['/habits']);
       }, error => console.log(error));
     }
