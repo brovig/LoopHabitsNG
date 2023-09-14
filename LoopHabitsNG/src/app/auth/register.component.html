@@ -4,20 +4,20 @@
 
     <mat-form-field>
       <mat-label>User name</mat-label>
-      <input matInput type="text" formControlName="username" required placeholder="Insert username" (keyup)="clearFailedReg()" />
+      <input matInput type="text" formControlName="username" required placeholder="Insert username" (keyup)="clearFailedReg($event)" />
       <mat-error *ngIf="form.controls['username'].errors?.['required']">Username is required</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Email</mat-label>
-      <input matInput type="email" formControlName="email" required placeholder="Insert email" (keyup)="clearFailedReg()" />
+      <input matInput type="email" formControlName="email" required placeholder="Insert email" (keyup)="clearFailedReg($event)" />
       <mat-error *ngIf="form.controls['email'].errors?.['required']">Email address is required</mat-error>
       <mat-error *ngIf="form.controls['email'].errors?.['email']">Must be a valid email address</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Password</mat-label>
-      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required placeholder="Insert password" (keyup)="clearFailedReg()" />
+      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required placeholder="Insert password" (keyup)="clearFailedReg($event)" />
       <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
       <mat-error *ngIf="form.controls['password'].errors?.['required']">Password is required</mat-error>
       <mat-error *ngIf="form.controls['password'].errors?.['pattern']" style="width: 80%; color: darkorange">Must contain at least 1 digit, 1 lowercase letter, 1 uppercase letter, and 1 non-alphanumeric character. At least 10 characters</mat-error>
@@ -28,9 +28,6 @@
       <div class="push">
         <button mat-flat-button color="primary" type="submit" [disabled]="!form.valid">Submit</button>
       </div>
-    </div>
-
-    
-
+    </div>  
   </form>
 </div>

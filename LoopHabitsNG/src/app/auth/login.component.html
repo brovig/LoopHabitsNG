@@ -3,20 +3,20 @@
 
     <mat-form-field>
       <mat-label>Email</mat-label>
-      <input matInput type="email" formControlName="email" required placeholder="Insert email" />
+      <input matInput type="email" formControlName="email" required placeholder="Insert email" (keyup)="clearFailedLog($event)" />
       <mat-error *ngIf="form.controls['email'].errors?.['required']">Email address is required</mat-error>
       <mat-error *ngIf="form.controls['email'].errors?.['email']">Must be a valid email address</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Password</mat-label>
-      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required placeholder="Insert password" />
+      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required placeholder="Insert password" (keyup)="clearFailedLog($event)" />
       <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
       <mat-error *ngIf="form.controls['password'].errors?.['required']">Password is required</mat-error>
     </mat-form-field>    
 
     <div class="form-bottom">
-      <mat-error *ngIf="failedLoginAttempt">Incorrect email or password</mat-error>
+      <mat-error *ngIf="failedLogMsg">{{failedLogMsg}}</mat-error>
       <div class="push">
         <!--<button mat-flat-button class="push" color="secondary" (click)="cancel($event)">Cancel</button>-->
         <button mat-flat-button color="primary" type="submit" [disabled]="!form.valid">Login</button>

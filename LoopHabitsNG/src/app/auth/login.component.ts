@@ -13,7 +13,7 @@ import { UserForAuth } from './UserForAuth';
 export class LoginComponent implements OnInit {
   form!: FormGroup;
   hidePassword = true;
-  failedLoginAttempt = false;
+  failedLogMsg = '';
 
   constructor(
     private router: Router,
@@ -26,6 +26,12 @@ export class LoginComponent implements OnInit {
     })
   }
 
+  clearFailedLog($event : KeyboardEvent) {
+    if ($event.keyCode != 13) {
+      this.failedLogMsg = '';
+    }    
+  }
+
   onSubmit() {
     const userForAuth = <UserForAuth>{};
     userForAuth.email = this.form.controls['email'].value;
@@ -33,13 +39,10 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(userForAuth).subscribe(result => {
       if (result) {
-        this.failedLoginAttempt = true;
         this.router.navigate(['/']);
       }
-    }, error => {
-      if (error.status === 401) {
-        this.failedLoginAttempt = true;
-      }
+    }, () => {
+      this.failedLogMsg = 'Login failed'; 
     });
   }
 }

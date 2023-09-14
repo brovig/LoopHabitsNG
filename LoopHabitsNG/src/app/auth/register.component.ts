@@ -30,8 +30,10 @@ export class RegisterComponent implements OnInit {
     })
   }
 
-  clearFailedReg() {
-    this.failedRegMsg = '';
+  clearFailedReg($event: KeyboardEvent) {
+    if ($event.keyCode != 13) {
+      this.failedRegMsg = '';
+    }    
   }
 
   onSubmit() {
@@ -46,8 +48,13 @@ export class RegisterComponent implements OnInit {
         this.router.navigate(['/login']);
       });
     }, error => {
+      this.failedRegMsg = '';
       for (const property in error.error) {
-        this.failedRegMsg += `${error.error[property]} \n`; 
+        if (property === 'DuplicateUserName' || property === 'DuplicateEmail') {
+          this.failedRegMsg += `${error.error[property]} \n`;
+        } else {
+          this.failedRegMsg = 'Registration failed';
+        }        
       }
     })
   }
