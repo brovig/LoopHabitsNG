@@ -3,25 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "LoopHabitsNG", "LoopHabitsNG\LoopHabitsNG.esproj", "{8B688661-0A1E-49A2-91FB-D44AE69DF767}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "LoopHabitsNG", "frontend\LoopHabitsNG\LoopHabitsNG.esproj", "{8B688661-0A1E-49A2-91FB-D44AE69DF767}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopHabitsAPI", "LoopHabitsAPI\LoopHabitsAPI.csproj", "{8D4DE2CD-6248-4D12-8E52-0FCB97D23D47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopHabitsAPI", "backend\LoopHabitsAPI\LoopHabitsAPI.csproj", "{8D4DE2CD-6248-4D12-8E52-0FCB97D23D47}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{FE35DB46-4763-418B-B5E1-19423DC5F1B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "backend\Contracts\Contracts.csproj", "{FE35DB46-4763-418B-B5E1-19423DC5F1B1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerService\LoggerService.csproj", "{60011A2E-D64E-4D82-B35D-5FA0BD29F2C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "backend\LoggerService\LoggerService.csproj", "{60011A2E-D64E-4D82-B35D-5FA0BD29F2C7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{46ED4EDB-8208-49FD-B408-4C744C02911F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "backend\Entities\Entities.csproj", "{46ED4EDB-8208-49FD-B408-4C744C02911F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{0F79BDCD-CD8C-427D-B772-4FA5977C141E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "backend\Repository\Repository.csproj", "{0F79BDCD-CD8C-427D-B772-4FA5977C141E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Contracts", "Service.Contracts\Service.Contracts.csproj", "{67F61F7A-5B55-4EC3-AB17-155D0B8DD86A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Contracts", "backend\Service.Contracts\Service.Contracts.csproj", "{67F61F7A-5B55-4EC3-AB17-155D0B8DD86A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{AA350855-9694-47A7-8EC3-9059068DCD32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "backend\Service\Service.csproj", "{AA350855-9694-47A7-8EC3-9059068DCD32}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopHabits.Presentation", "LoopHabits.Presentation\LoopHabits.Presentation.csproj", "{6AA022A3-193C-427C-8A4C-7D02D1DB8184}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopHabits.Presentation", "backend\LoopHabits.Presentation\LoopHabits.Presentation.csproj", "{6AA022A3-193C-427C-8A4C-7D02D1DB8184}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{C5751385-EDD6-4D8F-B68F-C91A2D19AF23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "backend\Shared\Shared.csproj", "{C5751385-EDD6-4D8F-B68F-C91A2D19AF23}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{D1F78575-B7D8-44E3-BEF6-3A51ABB77918}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "frontend", "frontend", "{46120CB1-9427-4747-81C2-E2799488A16B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,6 +78,18 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8B688661-0A1E-49A2-91FB-D44AE69DF767} = {46120CB1-9427-4747-81C2-E2799488A16B}
+		{8D4DE2CD-6248-4D12-8E52-0FCB97D23D47} = {D1F78575-B7D8-44E3-BEF6-3A51ABB77918}
+		{FE35DB46-4763-418B-B5E1-19423DC5F1B1} = {D1F78575-B7D8-44E3-BEF6-3A51ABB77918}
+		{60011A2E-D64E-4D82-B35D-5FA0BD29F2C7} = {D1F78575-B7D8-44E3-BEF6-3A51ABB77918}
+		{46ED4EDB-8208-49FD-B408-4C744C02911F} = {D1F78575-B7D8-44E3-BEF6-3A51ABB77918}
+		{0F79BDCD-CD8C-427D-B772-4FA5977C141E} = {D1F78575-B7D8-44E3-BEF6-3A51ABB77918}
+		{67F61F7A-5B55-4EC3-AB17-155D0B8DD86A} = {D1F78575-B7D8-44E3-BEF6-3A51ABB77918}
+		{AA350855-9694-47A7-8EC3-9059068DCD32} = {D1F78575-B7D8-44E3-BEF6-3A51ABB77918}
+		{6AA022A3-193C-427C-8A4C-7D02D1DB8184} = {D1F78575-B7D8-44E3-BEF6-3A51ABB77918}
+		{C5751385-EDD6-4D8F-B68F-C91A2D19AF23} = {D1F78575-B7D8-44E3-BEF6-3A51ABB77918}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E6645515-B7F1-4196-82CD-F34841E3CCDE}
