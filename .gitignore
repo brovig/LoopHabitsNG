@@ -1,6 +1,6 @@
-LoopHabitsAPI/internal_logs/
+backend/LoopHabitsAPI/internal_logs/
 *appsettings.Development.json
-LoopHabitsAPI/LoopHabitsBackup.db
+backend/LoopHabitsAPI/LoopHabitsBackup.db
 **/environments/environment.prod.ts
 
 
