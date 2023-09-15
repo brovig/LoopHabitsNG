@@ -24,8 +24,16 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "backend\Shared\Shared.csproj", "{C5751385-EDD6-4D8F-B68F-C91A2D19AF23}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{D1F78575-B7D8-44E3-BEF6-3A51ABB77918}"
+	ProjectSection(SolutionItems) = preProject
+		backend\README.md = backend\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "frontend", "frontend", "{46120CB1-9427-4747-81C2-E2799488A16B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D0B263A9-61EF-46A2-B40B-CB9F5FD46314}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
