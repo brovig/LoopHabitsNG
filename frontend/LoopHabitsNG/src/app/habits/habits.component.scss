@@ -2,6 +2,10 @@ table.mat-table {
   width: 100%;
 }
 
+.table-header {
+  height: 40px !important;
+}
+
 th {
   white-space: pre-line !important;
   text-align: center !important;
@@ -13,10 +17,9 @@ th {
 
 td {
   padding: 0px 0px;
-}
-
-tr {
-  height: 40px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
 }
 
 .mat-column-name {
