@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "prestart": "node aspnetcore-https",
-    "postinstall":  "npx --package @angular/compiler-cli@15.2.9 --yes ngcc"
+    "postinstall": "npx --package @angular/compiler-cli@15.2.9 --yes ngcc"
   },
   "private": true,
   "dependencies": {
@@ -23,14 +23,14 @@
     "@angular/platform-browser-dynamic": "16.2.4",
     "@angular/router": "16.2.4",
     "@angular/service-worker": "16.2.4",
-    "jest-editor-support": "*",
+    "jest-editor-support": "^31.0.0",
     "ng-connection-service": "^9.0.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "16.2.1",
+    "@angular-devkit/build-angular": "^16.2.7",
     "@angular/cli": "16.2.1",
     "@angular/compiler-cli": "16.2.4",
     "@types/jasmine": "~4.3.0",
@@ -45,5 +45,5 @@
     "karma-jasmine-html-reporter": "~2.0.0",
     "typescript": "~5.0.2"
   },
-  "sideEffects":  true
+  "sideEffects": true
 }
