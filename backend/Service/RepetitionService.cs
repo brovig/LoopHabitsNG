@@ -134,17 +134,22 @@ internal sealed class RepetitionService : IRepetitionService
 
         // Generate sequence of days from start to end
         int amountOfDays = (endDate - startDate).Days + 1;
-        var dates = Enumerable.Range(0, amountOfDays).Select(d => startDate.AddDays(d)).ToList();
+        var dates = Enumerable.Range(0, amountOfDays).Select(d => startDate.AddDays(d));
 
         // Populate new collection with values for every day
         var repsForAllDays = from d in dates
                              join r in repetitions on d equals r.Timestamp into grp
                              from r in grp.DefaultIfEmpty(new Repetition { Timestamp = d, Value = 0.0 })
                              select r.Value;
+        // Formatting dates as they will be present on client: each date projected into a string. 
+        // If the date is the first date of the month, check if it is also the first day of year. If so, return the year.
+        // Otherwise, return first three letters of the month name. 
+        // In all other cases return just the day of month as string
+        var formattedDates = dates.Select(d => d.Day == 1 ? (d.Month == 1 ? d.Year.ToString() : d.ToString("MMM")) : d.Day.ToString()).ToList();
         var values = repsForAllDays.ToList();
 
         // Populate scores collection
-        var scores = new ScoresDto { TimeStamps = dates };
+        var scores = new ScoresDto { TimeStamps = formattedDates };
         double rollingSum = 0.0;
         int numerator = habit.FrequencyNumber;
         int denominator = habit.FrequencyDensity;
@@ -218,7 +223,7 @@ internal sealed class RepetitionService : IRepetitionService
                 }
             }
 
-            scores.Values.Add(previousValue);
+            scores.Values.Add(previousValue * 100);
         }
 
         return scores;
