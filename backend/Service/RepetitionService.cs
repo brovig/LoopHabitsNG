@@ -164,7 +164,7 @@ internal sealed class RepetitionService : IRepetitionService
         double previousValue = isNumerical && isAtMost ? 1.0 : 0.0;
 
         for (int i = 0; i < values.Count; i++)
-        {            
+        {
             if (isNumerical)
             {
                 rollingSum += values[i];
