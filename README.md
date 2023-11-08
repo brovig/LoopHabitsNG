@@ -5,7 +5,7 @@ Self-host your API and database and connect to it with client app from any devic
 
 ![](https://github.com/brovig/LoopHabitsNG/blob/master/demo.gif)
 
-[DEMO](https://v1135323.hosted-by-vdsina.ru) _(Not for personal use. Registration and login required, however, there is no email confirmation set. So come up with some imaginary address and check current state of the app)._
+[DEMO](https://habits-demo.duckdns.org) _(Not for personal use. Registration and login required, however, there is no email confirmation set. So come up with some imaginary address and check current state of the app)._
 
 
 ## Current features
