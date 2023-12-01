@@ -23,6 +23,8 @@
     "@angular/platform-browser-dynamic": "16.2.4",
     "@angular/router": "16.2.4",
     "@angular/service-worker": "16.2.4",
+    "chart.js": "^4.4.0",
+    "chartjs-plugin-zoom": "^2.0.1",
     "jest-editor-support": "^31.0.0",
     "ng-connection-service": "^9.0.3",
     "rxjs": "~7.8.0",

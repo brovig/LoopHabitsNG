@@ -1,28 +1,120 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Habit } from '../habits/habit';
 import { HabitService } from '../habits/habit.service';
 import { ShareService } from '../share.service';
+import { ColorService } from '../color.service';
+import { StatisticsService } from './statistics.service';
+import { Chart, registerables } from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 @Component({
   selector: 'app-habit-details',
   templateUrl: './habit-details.component.html',
   styleUrls: ['./habit-details.component.scss']
 })
-export class HabitDetailsComponent {
-  public currentHabit?: Habit;
+export class HabitDetailsComponent implements OnInit {
+  public currentHabit!: Habit;
+  public habitColor!: string;
+  public currentDateInUTC: Date;
+  public dates!: string[];
+  public scores!: number[];
+  public scoresChart!: Chart;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private habitService: HabitService,
-    private shareService: ShareService
+    private statService: StatisticsService,
+    private shareService: ShareService,
+    private colorService: ColorService
   ) {
+    Chart.register(...registerables, zoomPlugin);
     const id = this.route.snapshot.params['id'];
     this.habitService.get(id).subscribe(data => {
       this.currentHabit = data;
+      this.habitColor = this.colorService.getColor(data.color);
       this.shareService.setHabit(data);
+      this.getScores();
     }, error => console.log(error));
+
+    const d = new Date();
+    this.currentDateInUTC = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 0));
+  }
+
+  ngOnInit() {
+    
+  }
+
+  getScores() {
+    this.statService.getScores(this.currentHabit?.id, this.currentDateInUTC).subscribe(scoresResult => {
+      this.dates = scoresResult.timeStamps;
+      this.scores = scoresResult.values;
+      this.createScoresChart();
+    }, error => console.error(error));
+  }
+
+  createScoresChart() {
+    const maxX = this.dates.length;
+    const screenWidth = window.innerWidth;
+    const initialPointsAmount = Math.floor((screenWidth / 28));
+
+    this.scoresChart = new Chart("ScoresChart", {
+      type: 'line',
+      data: {
+        labels: this.dates,
+        datasets: [
+          {
+            data: this.scores,
+            pointBackgroundColor: this.habitColor,
+            pointBorderColor: this.habitColor,
+            borderColor: this.habitColor
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        color: this.habitColor,
+        scales: {
+          y: {
+            min: 0,
+            max: 100
+          },
+          x: {
+            max: maxX,
+            ticks: {
+              maxRotation: 0
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          zoom: {
+            limits: {
+              x: { minRange: 10 }
+            },
+            pan: {
+              enabled: true,
+              mode: 'x',
+              scaleMode: 'x'
+            },
+            zoom: {
+              wheel: {
+                enabled: true
+              },
+              pinch: {
+                enabled: true
+              },
+              mode: 'x'
+            }            
+          }
+        }
+      }     
+    });          
+
+    this.scoresChart.zoomScale('x', { min: maxX - initialPointsAmount, max: maxX}, "zoom");    
   }
 
   getFreqMsg(freqDen: number, freqNum: number): string {
