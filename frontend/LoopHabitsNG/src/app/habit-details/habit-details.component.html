@@ -12,48 +12,52 @@
   </mat-card>
   <!--Overview-->
   <mat-card>
-    <mat-card-header>Overview</mat-card-header>
+    <mat-card-header [ngStyle]="{'color': this.habitColor}">Overview</mat-card-header>
     <mat-card-content>
       ...
     </mat-card-content>
   </mat-card>
   <!--Score-->
   <mat-card>
-    <mat-card-header>Score</mat-card-header>
+    <mat-card-header [ngStyle]="{'color': this.habitColor}">Score</mat-card-header>
     <mat-card-content>
-      <canvas id="ScoresChart">{{scoresChart}}</canvas>
+      <div class="chartWrapper">
+        <div class="chartContainer">
+          <canvas id="ScoresChart">{{scoresChart}}</canvas>
+        </div>
+      </div>      
     </mat-card-content>
   </mat-card>
   <!--History-->
   <mat-card>
-    <mat-card-header>History</mat-card-header>
+    <mat-card-header [ngStyle]="{'color': this.habitColor}">History</mat-card-header>
     <mat-card-content>
       ...
     </mat-card-content>
   </mat-card>
   <!--Calendar-->
   <mat-card>
-    <mat-card-header>Calendar</mat-card-header>
+    <mat-card-header [ngStyle]="{'color': this.habitColor}">Calendar</mat-card-header>
     <mat-card-content>
       ...
     </mat-card-content>
   </mat-card>
   <!--Best streaks-->
   <mat-card>
-    <mat-card-header>Best streaks</mat-card-header>
+    <mat-card-header [ngStyle]="{'color': this.habitColor}">Best streaks</mat-card-header>
     <mat-card-content>
       ...
     </mat-card-content>
   </mat-card>
   <!--Frequency-->
   <mat-card>
-    <mat-card-header>Frequency</mat-card-header>
+    <mat-card-header [ngStyle]="{'color': this.habitColor}">Frequency</mat-card-header>
     <mat-card-content>
       ...
     </mat-card-content>
   </mat-card>
   <div style="text-align: center; color: grey">
-    Detailed statistics will be implemented later
+    Detailed statistics implementation in progress
   </div>
 </ng-container>
 

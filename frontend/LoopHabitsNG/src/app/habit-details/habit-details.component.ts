@@ -3,8 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Habit } from '../habits/habit';
 import { HabitService } from '../habits/habit.service';
 import { ShareService } from '../share.service';
+import { ColorService } from '../color.service';
 import { StatisticsService } from './statistics.service';
 import { Chart, registerables } from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 @Component({
   selector: 'app-habit-details',
@@ -13,6 +15,7 @@ import { Chart, registerables } from 'chart.js';
 })
 export class HabitDetailsComponent implements OnInit {
   public currentHabit!: Habit;
+  public habitColor!: string;
   public currentDateInUTC: Date;
   public dates!: string[];
   public scores!: number[];
@@ -22,12 +25,14 @@ export class HabitDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private habitService: HabitService,
     private statService: StatisticsService,
-    private shareService: ShareService
+    private shareService: ShareService,
+    private colorService: ColorService
   ) {
-    Chart.register(...registerables);
+    Chart.register(...registerables, zoomPlugin);
     const id = this.route.snapshot.params['id'];
     this.habitService.get(id).subscribe(data => {
       this.currentHabit = data;
+      this.habitColor = this.colorService.getColor(data.color);
       this.shareService.setHabit(data);
       this.getScores();
     }, error => console.log(error));
@@ -49,20 +54,67 @@ export class HabitDetailsComponent implements OnInit {
   }
 
   createScoresChart() {
+    const maxX = this.dates.length;
+    const screenWidth = window.innerWidth;
+    const initialPointsAmount = Math.floor((screenWidth / 28));
+
     this.scoresChart = new Chart("ScoresChart", {
       type: 'line',
       data: {
         labels: this.dates,
         datasets: [
           {
-            data: this.scores
+            data: this.scores,
+            pointBackgroundColor: this.habitColor,
+            pointBorderColor: this.habitColor,
+            borderColor: this.habitColor
           }
         ]
       },
       options: {
-        aspectRatio: 2.5
-      }
-    });
+        responsive: true,
+        maintainAspectRatio: false,
+        color: this.habitColor,
+        scales: {
+          y: {
+            min: 0,
+            max: 100
+          },
+          x: {
+            max: maxX,
+            ticks: {
+              maxRotation: 0
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          zoom: {
+            limits: {
+              x: { minRange: 10 }
+            },
+            pan: {
+              enabled: true,
+              mode: 'x',
+              scaleMode: 'x'
+            },
+            zoom: {
+              wheel: {
+                enabled: true
+              },
+              pinch: {
+                enabled: true
+              },
+              mode: 'x'
+            }            
+          }
+        }
+      }     
+    });          
+
+    this.scoresChart.zoomScale('x', { min: maxX - initialPointsAmount, max: maxX}, "zoom");    
   }
 
   getFreqMsg(freqDen: number, freqNum: number): string {

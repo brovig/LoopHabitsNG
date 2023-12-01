@@ -26,3 +26,13 @@ mat-card-content {
   justify-content: flex-start;
   color: lightgrey;
 }
+
+div.chartWrapper {
+  position: relative;
+  overflow: auto;
+  width: 100%;
+}
+
+div.chartContainer {
+  position: relative;
+}

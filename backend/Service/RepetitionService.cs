@@ -5,6 +5,7 @@ using Entities.Models;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
+using System.Globalization;
 
 namespace Service;
 
@@ -129,6 +130,15 @@ internal sealed class RepetitionService : IRepetitionService
     // 2. Calculate scores
     private ScoresDto GetScoresListFromRepetitions(IEnumerable<Repetition> repetitions, DateTime endDate, Habit habit)
     {
+        if (repetitions.Count() == 0)
+        {
+            return new ScoresDto
+            {
+                TimeStamps = new List<string> { endDate.Day.ToString() },
+                Values = new List<double> { 0.0 }
+            };
+        }
+
         // Get starting date (first repetition by time, the last in the list)
         DateTime startDate = repetitions.Last().Timestamp;
 
@@ -145,7 +155,7 @@ internal sealed class RepetitionService : IRepetitionService
         // If the date is the first date of the month, check if it is also the first day of year. If so, return the year.
         // Otherwise, return first three letters of the month name. 
         // In all other cases return just the day of month as string
-        var formattedDates = dates.Select(d => d.Day == 1 ? (d.Month == 1 ? d.Year.ToString() : d.ToString("MMM")) : d.Day.ToString()).ToList();
+        var formattedDates = dates.Select(d => d.Day == 1 ? (d.Month == 1 ? d.Year.ToString() : d.ToString("MMM", CultureInfo.GetCultureInfo("en-US"))) : d.Day.ToString()).ToList();
         var values = repsForAllDays.ToList();
 
         // Populate scores collection
