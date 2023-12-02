@@ -5,7 +5,7 @@
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let habit" >
-      <a [routerLink]="['/habits', habit.id]" [ngStyle]="{'color': getColor(habit.color + 1)}">
+      <a [routerLink]="['/habits', habit.id]" [ngStyle]="{'color': habit.colorString}">
         {{habit.name}}
       </a>
     </td>
@@ -18,7 +18,7 @@
     </th>
     <td mat-cell *matCellDef="let habit" [hidden]="!habit.repetitions">
       <div class="rep" [ngSwitch]="habit.repetitions?.[displayedDates.indexOf(date)].value"
-           [ngStyle]="{'color': getColor(habit.color + 1)}">
+           [ngStyle]="{'color': habit.colorString}">
         <button *ngSwitchCase="-1" mat-icon-button
                 (click)="handleRepButtonClick(habit, habit.repetitions?.[displayedDates.indexOf(date)])">
           <mat-icon>close</mat-icon>
@@ -30,7 +30,7 @@
           </button>
           <div class="rep-measurable">
             <button *ngIf="habit.type === 1" mat-flat-button
-                    [ngStyle]="{'color': getColor(habit.color + 1)}"
+                    [ngStyle]="{'color': habit.colorString}"
                     (click)="handleRepButtonClick(habit, habit.repetitions?.[displayedDates.indexOf(date)])">
               0
             </button>
@@ -42,7 +42,7 @@
         </button>
         <div class="rep-measurable">
           <button *ngSwitchDefault mat-flat-button
-                  [ngStyle]="{'color': getColor(habit.color + 1)}"
+                  [ngStyle]="{'color': habit.colorString}"
                   (click)="handleRepButtonClick(habit, habit.repetitions?.[displayedDates.indexOf(date)])">
             {{habit.repetitions?.[displayedDates.indexOf(date)].value / 1000}}
           </button>

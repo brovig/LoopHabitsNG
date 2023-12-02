@@ -7,6 +7,7 @@ import { RepetitionService } from './repetition.service';
 import { Repetition } from './repetition';
 import { MatDialog } from '@angular/material/dialog';
 import { RepEditComponent } from './rep-edit.component';
+import { ColorService } from '../color.service';
 
 @Component({
   selector: 'app-habits',
@@ -25,6 +26,7 @@ export class HabitsComponent implements OnInit {
   constructor(
     private habitService: HabitService,
     private repetitionService: RepetitionService,
+    private colorService: ColorService,
     private dialog: MatDialog) {
   }
 
@@ -34,6 +36,9 @@ export class HabitsComponent implements OnInit {
 
   getData() {
     this.habitService.getData().subscribe(habitsResult => {
+      habitsResult.forEach((h) => {
+        h.colorString = this.colorService.getColor(h.color);
+      });
       this.habits = habitsResult;
       this.getDatesToDisplay();
       this.populateRepetitionsForHabit(this.dates, this.habits);
@@ -151,34 +156,6 @@ export class HabitsComponent implements OnInit {
           }
         }
       }
-    });
-
-    
-  }
-
-  getColor(key: number) {
-    switch (key) {
-      case 1: { return '#ed9999'; }
-      case 2: { return '#feaa90'; }
-      case 3: { return '#fecb7f'; }
-      case 4: { return '#feebb1'; }
-      case 5: { return '#69efad'; }
-      case 6: { return '#c4e0a5'; }
-      case 7: { return '#e5ed9a'; }
-      case 8: { return '#fef49b'; }
-      case 9: { return '#7fcac3'; }
-      case 10: { return '#7fdde9'; }
-      case 11: { return '#80d4f9'; }
-      case 12: { return '#64b4f5'; }
-      case 13: { return '#f38eb0'; }
-      case 14: { return '#cf91da'; }
-      case 15: { return '#b29cda'; }
-      case 16: { return '#9da7da'; }
-      case 17: { return '#bbaaa3'; }
-      case 18: { return '#f4f4f4'; }
-      case 19: { return '#dfdfdf'; }
-      case 20: { return '#9d9d9d'; }
-      default: { return '#ed9999'; }
-    }
-  }
+    });    
+  }  
 }

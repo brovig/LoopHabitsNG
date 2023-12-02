@@ -16,5 +16,6 @@ export interface Habit {
   targetValue: number;
   unit: string;
   question: string;
+  colorString: string;
   repetitions: object[];
 }

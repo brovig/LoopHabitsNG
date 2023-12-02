@@ -113,6 +113,7 @@ export class HabitCreateComponent implements OnInit {
       targetValue: 0,
       unit: '',
       question: '',
+      colorString: '',
       repetitions: []
     };
   }
