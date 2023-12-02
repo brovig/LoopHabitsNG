@@ -35,4 +35,21 @@ div.chartWrapper {
 
 div.chartContainer {
   position: relative;
+  vertical-align: central;
+}
+
+div.overviewChartContainer {
+  display: flex;
+  justify-content: center;
+  max-width: 40px;
+  max-height: 40px;
+}
+
+div.overviewPart {
+  margin: 6px 8px;
+}
+
+.overviewPart div {
+  text-align: center;
+  vertical-align: central;
 }

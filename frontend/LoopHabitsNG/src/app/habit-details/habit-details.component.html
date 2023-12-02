@@ -14,7 +14,25 @@
   <mat-card>
     <mat-card-header [ngStyle]="{'color': this.habitColor}">Overview</mat-card-header>
     <mat-card-content>
-      ...
+        <div class="overviewChartContainer">
+          <canvas id="OverviewChart">{{overviewChart}}</canvas>
+        </div>
+      <div class="overviewPart">
+        <div [ngStyle]="{'color': this.habitColor}">{{this.overview.get('Score')}}</div>
+        <div>Score</div>
+      </div>
+      <div class="overviewPart">
+        <div [ngStyle]="{'color': this.habitColor}">{{this.overview.get('Month')}}</div>
+        <div>Month</div>
+      </div>
+      <div class="overviewPart">
+        <div [ngStyle]="{'color': this.habitColor}">{{this.overview.get('Year')}}</div>
+        <div>Year</div>
+      </div>
+      <div class="overviewPart">
+        <div [ngStyle]="{'color': this.habitColor}">{{this.overview.get('Total')}}</div>
+        <div>Total</div>
+      </div>
     </mat-card-content>
   </mat-card>
   <!--Score-->

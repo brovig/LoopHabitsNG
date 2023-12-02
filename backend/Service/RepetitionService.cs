@@ -130,12 +130,14 @@ internal sealed class RepetitionService : IRepetitionService
     // 2. Calculate scores
     private ScoresDto GetScoresListFromRepetitions(IEnumerable<Repetition> repetitions, DateTime endDate, Habit habit)
     {
+        int repetitionsCount = repetitions.Where(r => r.Value == 2).Count();
         if (repetitions.Count() == 0)
         {
             return new ScoresDto
             {
                 TimeStamps = new List<string> { endDate.Day.ToString() },
-                Values = new List<double> { 0.0 }
+                Values = new List<double> { 0.0 },
+                TotalReps = 0
             };
         }
 
@@ -159,7 +161,7 @@ internal sealed class RepetitionService : IRepetitionService
         var values = repsForAllDays.ToList();
 
         // Populate scores collection
-        var scores = new ScoresDto { TimeStamps = formattedDates };
+        var scores = new ScoresDto { TimeStamps = formattedDates, TotalReps = repetitionsCount };
         double rollingSum = 0.0;
         int numerator = habit.FrequencyNumber;
         int denominator = habit.FrequencyDensity;

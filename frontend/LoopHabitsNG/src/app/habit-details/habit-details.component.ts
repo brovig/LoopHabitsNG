@@ -18,8 +18,10 @@ export class HabitDetailsComponent implements OnInit {
   public habitColor!: string;
   public currentDateInUTC: Date;
   public dates!: string[];
+  public overview = new Map<string, string>();
   public scores!: number[];
   public scoresChart!: Chart;
+  public overviewChart!: Chart<"doughnut", number[], unknown>;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,11 +48,58 @@ export class HabitDetailsComponent implements OnInit {
   }
 
   getScores() {
-    this.statService.getScores(this.currentHabit?.id, this.currentDateInUTC).subscribe(scoresResult => {
+    this.statService.getScores(this.currentHabit.id, this.currentDateInUTC).subscribe(scoresResult => {
       this.dates = scoresResult.timeStamps;
       this.scores = scoresResult.values;
+      this.overview.set('Total', scoresResult.totalReps.toString());
+      this.createOverview();
       this.createScoresChart();
     }, error => console.error(error));
+  }
+
+  createOverview() {
+    const scoresTotal = this.scores.length;
+    const currentScore = this.scores[scoresTotal - 1];
+
+    this.overviewChart = new Chart("OverviewChart", {
+      type: 'doughnut',
+      data: {
+        datasets: [
+          {
+            data: [currentScore, 100 - currentScore],
+            backgroundColor: [
+              this.habitColor,
+              'grey'
+            ],
+            borderWidth: 0
+          }
+        ]
+      },
+      options: {
+        events: [],
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '70%'
+      }
+    });      
+
+    this.overview.set('Score', Math.round(currentScore) + '%');
+
+    const valueMonth = scoresTotal > 31 ? Math.round(currentScore - this.scores[scoresTotal - 31]) : Math.round(currentScore);
+    if (scoresTotal > 31) {
+      const change = valueMonth > 0 ? '+' + valueMonth : valueMonth;
+      this.overview.set('Month', change + '%');
+    } else {
+      this.overview.set('Month', '+' + valueMonth + '%');
+    }
+
+    const valueYear = scoresTotal > 365 ? Math.round(currentScore - this.scores[scoresTotal - 366]) : Math.round(currentScore);
+    if (scoresTotal > 365) {      
+      const change = valueYear > 0 ? '+' + valueYear : valueYear;
+      this.overview.set('Year', change + '%');
+    } else {
+      this.overview.set('Year', '+' + valueYear + '%');
+    }
   }
 
   createScoresChart() {
