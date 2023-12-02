@@ -51,6 +51,6 @@
     </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-header"></tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="table-header"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
