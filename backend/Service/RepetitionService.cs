@@ -68,15 +68,15 @@ internal sealed class RepetitionService : IRepetitionService
 
 
 
-    public async Task<ScoresDto> GetHabitScoresAsync(string userId, Guid habitId, RepetitionParameters repetitionParameters, bool trackChanges)
+    public async Task<HabitStatisticsDto> GetHabitStatisticsAsync(string userId, Guid habitId, RepetitionParameters repetitionParameters, bool trackChanges)
     {
         Habit habit = await GetHabitAndCheckIfItExists(userId, habitId, trackChanges);
 
         var repetitions = await _repository.Repetition.GetRepetitionsAsync(habitId, repetitionParameters, trackChanges);
 
-        var scoresDto = GetScoresListFromRepetitions(repetitions, repetitionParameters.EndDate, habit);
+        var habitStatsDto = GetStatsFromRepetitions(repetitions, repetitionParameters.EndDate, habit);
 
-        return scoresDto;
+        return habitStatsDto;
     }
 
 
@@ -128,15 +128,17 @@ internal sealed class RepetitionService : IRepetitionService
     // Repetitions collection processed to get scores collection:
     // 1. Get rep values for every day in time period (assigning 0 to abscent reps)
     // 2. Calculate scores
-    private ScoresDto GetScoresListFromRepetitions(IEnumerable<Repetition> repetitions, DateTime endDate, Habit habit)
+    private HabitStatisticsDto GetStatsFromRepetitions(IEnumerable<Repetition> repetitions, DateTime endDate, Habit habit)
     {
         int repetitionsCount = repetitions.Where(r => r.Value == 2).Count();
         if (repetitions.Count() == 0)
-        {
-            return new ScoresDto
+        {            
+            return new HabitStatisticsDto
             {
-                TimeStamps = new List<string> { endDate.Day.ToString() },
-                Values = new List<double> { 0.0 },
+                Scores = new Scores {
+                    ScoreTimeStamps = new List<string> { endDate.Day.ToString() },
+                    ScoreValues = new List<double> { 0.0 }
+                },
                 TotalReps = 0
             };
         }
@@ -158,10 +160,14 @@ internal sealed class RepetitionService : IRepetitionService
         // Otherwise, return first three letters of the month name. 
         // In all other cases return just the day of month as string
         var formattedDates = dates.Select(d => d.Day == 1 ? (d.Month == 1 ? d.Year.ToString() : d.ToString("MMM", CultureInfo.GetCultureInfo("en-US"))) : d.Day.ToString()).ToList();
-        var values = repsForAllDays.ToList();
+        var scoreValues = repsForAllDays.ToList();
 
         // Populate scores collection
-        var scores = new ScoresDto { TimeStamps = formattedDates, TotalReps = repetitionsCount };
+        var habitStatistics = new HabitStatisticsDto
+        {
+            TotalReps = repetitionsCount
+        };
+        var scores = new Scores { ScoreTimeStamps = formattedDates };
         double rollingSum = 0.0;
         int numerator = habit.FrequencyNumber;
         int denominator = habit.FrequencyDensity;
@@ -180,15 +186,15 @@ internal sealed class RepetitionService : IRepetitionService
 
         double previousValue = isNumerical && isAtMost ? 1.0 : 0.0;
 
-        for (int i = 0; i < values.Count; i++)
+        for (int i = 0; i < scoreValues.Count; i++)
         {
             if (isNumerical)
             {
-                rollingSum += values[i];
+                rollingSum += scoreValues[i];
                 if (i - denominator >= 0)
-                    rollingSum -= values[i - denominator];
+                    rollingSum -= scoreValues[i - denominator];
                 double normalizedRollingSum = rollingSum / 1000;
-                if (values[i] != entrySkipValue)
+                if (scoreValues[i] != entrySkipValue)
                 {
                     if (!isAtMost)
                     {
@@ -221,24 +227,25 @@ internal sealed class RepetitionService : IRepetitionService
             }
             else
             {
-                if (values[i] == yesManualValue)
+                if (scoreValues[i] == yesManualValue)
                         rollingSum += 1.0;
                 if (i - denominator >= 0)
                 {
-                    if (values[i - denominator] == yesManualValue)
+                    if (scoreValues[i - denominator] == yesManualValue)
                         rollingSum -= 1.0;
                 }
-                if (values[i] != entrySkipValue)
+                if (scoreValues[i] != entrySkipValue)
                 {
                     percentageCompleted = Math.Min(1.0, rollingSum / numerator);
                     previousValue = CalculateScoreForRep(frequency, previousValue, percentageCompleted);
                 }
             }
 
-            scores.Values.Add(previousValue * 100);
+            scores.ScoreValues.Add(previousValue * 100);
         }
 
-        return scores;
+        habitStatistics.Scores = scores;
+        return habitStatistics;
     }
 
     private double CalculateScoreForRep(double frequency, double previousScore, double checkmarkValue)

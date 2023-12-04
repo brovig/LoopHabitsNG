@@ -48,10 +48,10 @@ export class HabitDetailsComponent implements OnInit {
   }
 
   getScores() {
-    this.statService.getScores(this.currentHabit.id, this.currentDateInUTC).subscribe(scoresResult => {
-      this.dates = scoresResult.timeStamps;
-      this.scores = scoresResult.values;
-      this.overview.set('Total', scoresResult.totalReps.toString());
+    this.statService.getStats(this.currentHabit.id, this.currentDateInUTC).subscribe(statsResult => {
+      this.dates = statsResult.scores.scoreTimeStamps;
+      this.scores = statsResult.scores.scoreValues;
+      this.overview.set('Total', statsResult.totalReps.toString());
       this.createOverview();
       this.createScoresChart();
     }, error => console.error(error));

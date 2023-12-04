@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Scores } from './scores';
+import { HabitStatistics } from './habitStatistics';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 
@@ -12,9 +12,9 @@ export class StatisticsService {
   constructor(private http: HttpClient) {
   }
 
-  getScores(habitId: string,
-    endDate: Date | null): Observable<Scores> {
-    const url = this.getUrl("api/habits/" + habitId + "/repetitions/scores");
+  getStats(habitId: string,
+    endDate: Date | null): Observable<HabitStatistics> {
+    const url = this.getUrl("api/habits/" + habitId + "/repetitions/stats");
 
     let params = new HttpParams();
 
@@ -22,7 +22,7 @@ export class StatisticsService {
       params = params.set("endDate", endDate.toISOString().split('.')[0] + 'Z');
     }
 
-    return this.http.get<Scores>(url, { params });
+    return this.http.get<HabitStatistics>(url, { params });
   }
 
   protected getUrl(url: string) {

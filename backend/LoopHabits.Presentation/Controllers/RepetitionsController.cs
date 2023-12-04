@@ -38,14 +38,14 @@ public class RepetitionsController : ControllerBase
         return Ok(repetition);
     }
 
-    [HttpGet("scores")]
-    public async Task<IActionResult> GetScores(Guid habitId, [FromQuery] RepetitionParameters repetitionParameters, [FromHeader] string authorization)
+    [HttpGet("stats")]
+    public async Task<IActionResult> GetHabitStatistics(Guid habitId, [FromQuery] RepetitionParameters repetitionParameters, [FromHeader] string authorization)
     {
         var userId = await _service.AuthenticationService.GetUserId(authorization);
 
-        var scores = await _service.RepetitionService.GetHabitScoresAsync(userId, habitId, repetitionParameters, trackChanges: false);
+        var stats = await _service.RepetitionService.GetHabitStatisticsAsync(userId, habitId, repetitionParameters, trackChanges: false);
 
-        return Ok(scores);
+        return Ok(stats);
     }
 
     [HttpPost]
