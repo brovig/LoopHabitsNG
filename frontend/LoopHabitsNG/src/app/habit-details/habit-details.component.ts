@@ -180,8 +180,6 @@ export class HabitDetailsComponent implements OnInit {
   createHistoryChart(barsToShow: number) {
     const lastX = this.historyDates.length;
 
-    console.log(Math.max(...this.historyValues));
-
     this.historyChart = new Chart("HistoryChart", {
       type: 'bar',
       data: {
