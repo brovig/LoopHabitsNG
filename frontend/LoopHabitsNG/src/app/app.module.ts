@@ -68,7 +68,7 @@ export function DECLARATIONS() {
       useValue: <ConnectionServiceOptions>{
         enableHeartbeat: true,
         heartbeatUrl: environment.baseUrl + 'api/heartbeat',
-        heartbeatInterval: 2000
+        heartbeatInterval: 5000
       }
     }
   ],

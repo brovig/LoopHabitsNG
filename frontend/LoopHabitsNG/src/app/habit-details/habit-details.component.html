@@ -48,9 +48,13 @@
   </mat-card>
   <!--History-->
   <mat-card>
-    <mat-card-header [ngStyle]="{'color': this.habitColor}">History</mat-card-header>
+    <mat-card-header [ngStyle]="{'color': this.habitColor}">Week history</mat-card-header>
     <mat-card-content>
-      ...
+      <div class="chartWrapper">
+        <div class="chartContainer">
+          <canvas id="HistoryChart">{{historyChart}}</canvas>
+        </div>
+      </div>
     </mat-card-content>
   </mat-card>
   <!--Calendar-->

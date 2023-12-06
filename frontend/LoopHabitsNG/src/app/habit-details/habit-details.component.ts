@@ -7,6 +7,8 @@ import { ColorService } from '../color.service';
 import { StatisticsService } from './statistics.service';
 import { Chart, registerables } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-habit-details',
@@ -18,10 +20,13 @@ export class HabitDetailsComponent implements OnInit {
   public habitColor!: string;
   public currentDateInUTC: Date;
   public dates!: string[];
+  public historyDates!: string[];
+  public historyValues!: number[];
   public overview = new Map<string, string>();
   public scores!: number[];
-  public scoresChart!: Chart;
   public overviewChart!: Chart<"doughnut", number[], unknown>;
+  public scoresChart!: Chart;
+  public historyChart!: Chart;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,7 +41,7 @@ export class HabitDetailsComponent implements OnInit {
       this.currentHabit = data;
       this.habitColor = this.colorService.getColor(data.color);
       this.shareService.setHabit(data);
-      this.getScores();
+      this.getStats();
     }, error => console.log(error));
 
     const d = new Date();
@@ -47,13 +52,21 @@ export class HabitDetailsComponent implements OnInit {
     
   }
 
-  getScores() {
+  getStats() {
     this.statService.getStats(this.currentHabit.id, this.currentDateInUTC).subscribe(statsResult => {
+      this.overview.set('Total', statsResult.totalReps.toString());
       this.dates = statsResult.scores.scoreTimeStamps;
       this.scores = statsResult.scores.scoreValues;
-      this.overview.set('Total', statsResult.totalReps.toString());
+      this.historyDates = statsResult.history.historyTimeStamps.map(d => this.convertDate(d));      
+      this.historyValues = statsResult.history.historyValues;
+
+      const screenWidth = window.innerWidth;
+      const initialPointsAmount = Math.floor((screenWidth / 28));
+
       this.createOverview();
-      this.createScoresChart();
+      this.createScoresChart(initialPointsAmount);
+      this.createHistoryChart(initialPointsAmount);
+
     }, error => console.error(error));
   }
 
@@ -102,10 +115,8 @@ export class HabitDetailsComponent implements OnInit {
     }
   }
 
-  createScoresChart() {
-    const maxX = this.dates.length;
-    const screenWidth = window.innerWidth;
-    const initialPointsAmount = Math.floor((screenWidth / 28));
+  createScoresChart(pointsToShow: number) {
+    const lastX = this.dates.length;    
 
     this.scoresChart = new Chart("ScoresChart", {
       type: 'line',
@@ -130,7 +141,7 @@ export class HabitDetailsComponent implements OnInit {
             max: 100
           },
           x: {
-            max: maxX,
+            max: lastX,
             ticks: {
               maxRotation: 0
             }
@@ -163,7 +174,97 @@ export class HabitDetailsComponent implements OnInit {
       }     
     });          
 
-    this.scoresChart.zoomScale('x', { min: maxX - initialPointsAmount, max: maxX}, "zoom");    
+    this.scoresChart.zoomScale('x', { min: lastX - pointsToShow, max: lastX}, "zoom");    
+  }
+
+  createHistoryChart(barsToShow: number) {
+    const lastX = this.historyDates.length;
+
+    console.log(Math.max(...this.historyValues));
+
+    this.historyChart = new Chart("HistoryChart", {
+      type: 'bar',
+      data: {
+        labels: this.historyDates,
+        datasets: [
+          {
+            data: this.historyValues,
+            backgroundColor: this.habitColor,
+            borderRadius: 2,
+            maxBarThickness: 10,
+            datalabels: {
+              color: this.habitColor,
+              anchor: 'end',
+              align: 'top'
+            }
+          }
+        ]
+      },
+      plugins: [ChartDataLabels],
+      options: {
+        events: [],
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            min: 0,
+            max: this.currentHabit.type == 1 ? Math.max(...this.historyValues) + Math.max(...this.historyValues) / 3 : 9,
+            display: false
+          },
+          x: {
+            max: lastX,
+            ticks: {
+              maxRotation: 0
+            }
+          }
+        },
+        plugins: {          
+          legend: {
+            display: false
+          },
+          zoom: {
+            limits: {
+              x: { minRange: 10 }
+            },
+            pan: {
+              enabled: true,
+              mode: 'x',
+              scaleMode: 'x'
+            },
+            zoom: {
+              wheel: {
+                enabled: true
+              },
+              pinch: {
+                enabled: true
+              },
+              mode: 'x'
+            }
+          },
+          datalabels: {
+            display: function (context) {
+              return context.dataset.data[context.dataIndex] !== 0;
+            }
+          }
+        }
+      }
+    });
+
+    this.historyChart.zoomScale('x', { min: lastX - barsToShow, max: lastX }, "zoom"); 
+  }
+
+  convertDate(date: string) {
+    const parsedDate = new Date(date);
+
+    if (parsedDate.getMonth() === 0 && parsedDate.getDate() >= 1 && parsedDate.getDate() <= 7) {
+      return format(parsedDate, 'yyyy');
+    }
+
+    if (parsedDate.getDate() >= 1 && parsedDate.getDate() <= 7) {
+      return format(parsedDate, 'MMM');
+    }
+
+    return format(parsedDate, 'd');
   }
 
   getFreqMsg(freqDen: number, freqNum: number): string {

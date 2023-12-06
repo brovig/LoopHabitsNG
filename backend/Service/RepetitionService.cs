@@ -132,14 +132,20 @@ internal sealed class RepetitionService : IRepetitionService
     {
         int repetitionsCount = repetitions.Where(r => r.Value == 2).Count();
         if (repetitions.Count() == 0)
-        {            
+        {
             return new HabitStatisticsDto
             {
-                Scores = new Scores {
+                Scores = new Scores
+                {
                     ScoreTimeStamps = new List<string> { endDate.Day.ToString() },
                     ScoreValues = new List<double> { 0.0 }
                 },
-                TotalReps = 0
+                TotalReps = 0,
+                History = new History
+                {
+                    HistoryTimeStamps = new List<DateOnly> { DateOnly.FromDateTime(endDate) },
+                    HistoryValues = new List<double> { 0.0 }
+                }
             };
         }
 
@@ -154,13 +160,14 @@ internal sealed class RepetitionService : IRepetitionService
         var repsForAllDays = from d in dates
                              join r in repetitions on d equals r.Timestamp into grp
                              from r in grp.DefaultIfEmpty(new Repetition { Timestamp = d, Value = 0.0 })
-                             select r.Value;
+                             select r;
+        var repValuesForAllDays = repsForAllDays.Select(r => r.Value);
         // Formatting dates as they will be present on client: each date projected into a string. 
         // If the date is the first date of the month, check if it is also the first day of year. If so, return the year.
         // Otherwise, return first three letters of the month name. 
         // In all other cases return just the day of month as string
         var formattedDates = dates.Select(d => d.Day == 1 ? (d.Month == 1 ? d.Year.ToString() : d.ToString("MMM", CultureInfo.GetCultureInfo("en-US"))) : d.Day.ToString()).ToList();
-        var scoreValues = repsForAllDays.ToList();
+        var scoreValues = repValuesForAllDays.ToList();
 
         // Populate scores collection
         var habitStatistics = new HabitStatisticsDto
@@ -243,8 +250,12 @@ internal sealed class RepetitionService : IRepetitionService
 
             scores.ScoreValues.Add(previousValue * 100);
         }
-
         habitStatistics.Scores = scores;
+
+        // Populate history (amount of repetitions per week)
+        var historyByWeek = GetHistory(repsForAllDays, isNumerical);
+        habitStatistics.History = historyByWeek;
+
         return habitStatistics;
     }
 
@@ -254,5 +265,23 @@ internal sealed class RepetitionService : IRepetitionService
         double score = previousScore * multiplier;
         score += checkmarkValue * (1 - multiplier);
         return score;
+    }
+
+    private History GetHistory(IEnumerable<Repetition> repetitions, bool isNumerical)
+    {
+        var historyData = repetitions
+                            .GroupBy(r => DateOnly.FromDateTime(r.Timestamp).AddDays(-(int)r.Timestamp.DayOfWeek + (int)DayOfWeek.Monday))
+                            .Select(g => new
+                            {
+                                StartOfWeek = g.Key,
+                                HistoryValue = isNumerical ? g.Select(r => r.Value).Sum() / 1000 : g.Where(r => r.Value != 0).Count()
+                            })
+                            .ToList();
+
+        var history = new History();
+        history.HistoryTimeStamps.AddRange(historyData.Select(h => h.StartOfWeek));
+        history.HistoryValues.AddRange(historyData.Select(h => h.HistoryValue));
+        
+        return history;
     }
 }
