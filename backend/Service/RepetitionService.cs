@@ -48,6 +48,7 @@ internal sealed class RepetitionService : IRepetitionService
 
     public async Task<IEnumerable<RepetitionDto>> GetRepetitionsAsync(string userId, Guid habitId, RepetitionParameters repetitionParameters, bool trackChanges)
     {
+        if (!repetitionParameters.ValidDateRange) throw new DateRangeBadRequestException();
         await CheckIfHabitExists(userId, habitId, trackChanges);
 
         var repetitions = await _repository.Repetition.GetRepetitionsAsync(habitId, repetitionParameters, trackChanges);
@@ -70,6 +71,7 @@ internal sealed class RepetitionService : IRepetitionService
 
     public async Task<HabitStatisticsDto> GetHabitStatisticsAsync(string userId, Guid habitId, RepetitionParameters repetitionParameters, bool trackChanges)
     {
+        if (!repetitionParameters.ValidDateRange) throw new DateRangeBadRequestException();
         Habit habit = await GetHabitAndCheckIfItExists(userId, habitId, trackChanges);
 
         var repetitions = await _repository.Repetition.GetRepetitionsAsync(habitId, repetitionParameters, trackChanges);
