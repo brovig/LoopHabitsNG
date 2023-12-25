@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Shared.RequestFeatures;
 using System.Net;
 
 namespace LoopHabits.Presentation.Controllers;
@@ -20,11 +21,11 @@ public class HabitsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetHabits([FromHeader] string authorization)
+    public async Task<IActionResult> GetHabits([FromQuery] RepetitionParameters repetitionParameters, [FromHeader] string authorization)
     {
         var userId = await _service.AuthenticationService.GetUserId(authorization);
 
-        var habits = await _service.HabitService.GetAllHabitsAsync(userId, trackChanges: false);
+        var habits = await _service.HabitService.GetAllHabitsWithRepsAsync(userId, repetitionParameters, trackChanges: false);
         return Ok(habits);
     }
 
@@ -34,7 +35,6 @@ public class HabitsController : ControllerBase
         var userId = await _service.AuthenticationService.GetUserId(authorization);
 
         var habit = await _service.HabitService.GetHabitAsync(userId, id, trackChanges: false);
-
         return Ok(habit);
     }
 

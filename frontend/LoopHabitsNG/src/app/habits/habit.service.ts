@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient} from '@angular/common/http';
+import { HttpClient, HttpParams} from '@angular/common/http';
 import { BaseService} from '../base.service';
 import { Observable } from 'rxjs';
 
@@ -13,9 +13,20 @@ export class HabitService extends BaseService<Habit> {
     super(http);
   }
 
-  getData(): Observable<Habit[]> {
+  getData(startDate: Date | null,
+          endDate: Date | null): Observable<Habit[]> {
     const url = this.getUrl("api/habits");
-    return this.http.get<Habit[]>(url);
+
+    let params = new HttpParams();
+
+    if (startDate) {
+      params = params.set("startDate", startDate.toISOString().split('.')[0] + 'Z');
+    }
+    if (endDate) {
+      params = params.set("endDate", endDate.toISOString().split('.')[0] + 'Z');
+    }
+
+    return this.http.get<Habit[]>(url, { params });
   }
 
   get(id: string): Observable<Habit> {

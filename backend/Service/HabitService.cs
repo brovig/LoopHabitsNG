@@ -4,6 +4,7 @@ using Entities.Exceptions;
 using Entities.Models;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Shared.RequestFeatures;
 
 namespace Service;
 
@@ -24,6 +25,16 @@ internal sealed class HabitService : IHabitService
     {
         var habits = await _repository.Habit.GetAllHabitsAsync(userId, trackChanges);
         var habitsDto = _mapper.Map<IEnumerable<HabitDto>>(habits);
+        return habitsDto;
+    }
+
+    public async Task<IEnumerable<HabitWithRepsDto>> GetAllHabitsWithRepsAsync(string userId, RepetitionParameters repetitionParameters, bool trackChanges)
+    {
+        if (!repetitionParameters.ValidDateRange) throw new DateRangeBadRequestException();
+
+        var habits = await _repository.Habit.GetAllHabitsWithRepsAsync(userId, repetitionParameters, trackChanges);
+
+        var habitsDto = _mapper.Map<IEnumerable<HabitWithRepsDto>>(habits);
         return habitsDto;
     }
 

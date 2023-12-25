@@ -3,5 +3,4 @@
 public record HabitForUpdateDto : HabitForManipulationDto
 {
     public IEnumerable<RepetitionForCreationDto>? Repetitions { get; init; }
-
 }

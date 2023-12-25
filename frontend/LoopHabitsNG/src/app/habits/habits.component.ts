@@ -35,13 +35,13 @@ export class HabitsComponent implements OnInit {
   }
 
   getData() {
-    this.habitService.getData().subscribe(habitsResult => {
-      habitsResult.forEach((h) => {
-        h.colorString = this.colorService.getColor(h.color);
+      this.getDatesToDisplay();
+      this.habitService.getData(this.dates[this.dates.length - 1], this.dates[0]).subscribe(habitsResult => {
+        habitsResult.forEach((h) => {
+          h.colorString = this.colorService.getColor(h.color);
+          this.populateRepetitionsForHabit(this.dates, h);
       });
       this.habits = habitsResult;
-      this.getDatesToDisplay();
-      this.populateRepetitionsForHabit(this.dates, this.habits);
       this.populateDisplayedColumns(this.dates);
       this.displayedDates = this.displayedColumns.slice(1);
       this.dataSource = new MatTableDataSource(this.habits);
@@ -61,30 +61,27 @@ export class HabitsComponent implements OnInit {
     }
   }
 
-  populateRepetitionsForHabit(dates: Date[], habits: Habit[]) {
-    habits.forEach((h) => {
-      this.repetitionService.getData(h.id, dates[dates.length - 1], dates[0]).subscribe(repetitionsResult => {
-        const repetitionsToDisplay: Repetition[] = [];
-        dates.forEach((d) => {
-          const dateString = d.toISOString().split('.')[0] + 'Z';
-          const repetitionFound = repetitionsResult.find(r => r.timeStamp === dateString);
-          if (repetitionFound) {
-            repetitionsToDisplay.push(repetitionFound);
-          } else {
-            let valueToDisplay: number = -1;
-            if (h.type === 1) {
-              valueToDisplay = 0;
-            } 
-            repetitionsToDisplay.push({
-              id: -1,
-              timeStamp: dateString,
-              value: valueToDisplay
-            });
-          }
+  populateRepetitionsForHabit(dates: Date[], habit: Habit) {
+    const reps = habit.repetitions;
+    const repetitionsToDisplay: Repetition[] = [];
+    dates.forEach((d) => {
+      const dateString = d.toISOString().split('.')[0] + 'Z';
+      const repetitionFound = reps.find(r => r.timeStamp === dateString);
+      if (repetitionFound) {
+        repetitionsToDisplay.push(repetitionFound);
+      } else {
+        let valueToDisplay: number = -1;
+        if (habit.type === 1) {
+          valueToDisplay = 0;
+        } 
+        repetitionsToDisplay.push({
+          id: -1,
+          timeStamp: dateString,
+          value: valueToDisplay
         });
-        h.repetitions = repetitionsToDisplay;
-      }, error => console.error(error));
+      }
     });
+    habit.repetitions = repetitionsToDisplay;
   }
 
   populateDisplayedColumns(dates: Date[]) {

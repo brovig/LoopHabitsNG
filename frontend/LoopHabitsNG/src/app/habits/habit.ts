@@ -1,3 +1,5 @@
+import { Repetition } from "./repetition";
+
 export interface Habit {
   id: string;
   isArchived: boolean;
@@ -17,5 +19,5 @@ export interface Habit {
   unit: string;
   question: string;
   colorString: string;
-  repetitions: object[];
+  repetitions: Repetition[];
 }

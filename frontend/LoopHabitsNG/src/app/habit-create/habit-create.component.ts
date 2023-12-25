@@ -32,7 +32,8 @@ export class HabitCreateComponent implements OnInit {
     private colorService: ColorService
   ) {
     this.colors = this.colorService.getAllColors();
-    this.habitService.getData().subscribe(data => {
+    const d = new Date();
+    this.habitService.getData(d, d).subscribe(data => {
       this.habits = data;
       this.loadData();
       this.shareService.setHabit(this.habit);
@@ -123,7 +124,8 @@ export class HabitCreateComponent implements OnInit {
   }
 
   getHabits() {
-    this.habitService.getData().subscribe(habitsResult => {
+    const d = new Date();
+    this.habitService.getData(d, d).subscribe(habitsResult => {
       this.habits = habitsResult;
     }, error => console.error(error));
   }

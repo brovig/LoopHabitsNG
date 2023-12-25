@@ -9,6 +9,7 @@ public class MappingProfile: Profile
     public MappingProfile()
     {
         CreateMap<Habit, HabitDto>();
+        CreateMap<Habit, HabitWithRepsDto>();
         CreateMap<Repetition, RepetitionDto>();
 
         CreateMap<Habit, HabitDto>().ReverseMap();
