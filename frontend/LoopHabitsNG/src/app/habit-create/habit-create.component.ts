@@ -7,6 +7,7 @@ import { Habit } from '../habits/habit';
 import { MatDialog } from '@angular/material/dialog';
 import { FrequencyDialogComponent } from './frequency-dialog.component';
 import { ShareService } from '../share.service';
+import { ColorService } from '../color.service';
 
 @Component({
   selector: 'app-habit-create',
@@ -17,6 +18,7 @@ export class HabitCreateComponent implements OnInit {
   public form!: FormGroup;
   public habit!: Habit;
   public habits: Habit[] = [];
+  public colors: string[];
   public selectedFrequency!: string;
   public position!: number;
 
@@ -26,8 +28,10 @@ export class HabitCreateComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog,
-    private shareService: ShareService
+    private shareService: ShareService,
+    private colorService: ColorService
   ) {
+    this.colors = this.colorService.getAllColors();
     this.habitService.getData().subscribe(data => {
       this.habits = data;
       this.loadData();
@@ -70,7 +74,7 @@ export class HabitCreateComponent implements OnInit {
 
     if (idParam == undefined) {
       this.habit.type = 0;
-      this.form.controls['color'].patchValue(this.colors[0]);
+      this.form.controls['color'].patchValue(this.colorService.getColor(0));
       this.form.controls['frequency'].patchValue(this.selectedFrequency);
       return;
     }
@@ -82,14 +86,14 @@ export class HabitCreateComponent implements OnInit {
       } else {
         this.form.controls['targetValue'].patchValue(0);
       }      
-      this.form.controls['color'].patchValue(this.colors[0]);
+      this.form.controls['color'].patchValue(this.colorService.getColor(0));
       this.form.controls['frequency'].patchValue(this.selectedFrequency);
       return;
     }
 
     if (idParam!.length > 1 && this.habit.id != '0') {
       this.form.patchValue(this.habit);
-      this.form.controls['color'].patchValue(this.colors[this.habit.color]);
+      this.form.controls['color'].patchValue(this.colorService.getColor(this.habit.color));
       this.form.controls['frequency'].patchValue(this.selectedFrequency);
     }
   }
@@ -211,7 +215,7 @@ export class HabitCreateComponent implements OnInit {
 
   onSubmit() {
     this.habit.name = this.form.controls['name'].value;
-    this.habit.color = this.colors.indexOf(this.form.controls['color'].value);
+    this.habit.color = this.colorService.getColorNumber(this.form.controls['color'].value);
     this.habit.question = this.form.controls['question'].value;
     this.habit.unit = this.form.controls['unit'].value;
     this.habit.targetValue = this.form.controls['targetValue'].value;
@@ -231,7 +235,7 @@ export class HabitCreateComponent implements OnInit {
     this.habit.description = this.form.controls['description'].value;
     
     if (this.habit.id === '-1') {
-      this.habitService.post(this.habit).subscribe(result => {
+      this.habitService.post(this.habit).subscribe(() => {
         this.router.navigate(['/habits']);
       }, error => console.log(error));
     } else {
@@ -240,28 +244,4 @@ export class HabitCreateComponent implements OnInit {
       }, error => console.log(error));
     }
   }
-
-  public colors: string[] = [
-    '#ed9999',
-    '#feaa90',
-    '#fecb7f',
-    '#feebb1',
-    '#69efad',
-    '#c4e0a5',
-    '#e5ed9a',
-    '#fef49b',
-    '#7fcac3',
-    '#7fdde9',
-    '#80d4f9',
-    '#64b4f5',
-    '#f38eb0',
-    '#cf91da',
-    '#b29cda',
-    '#9da7da',
-    '#bbaaa3',
-    '#f4f4f4',
-    '#dfdfdf',
-    '#9d9d9d'
-  ];
-
 }
