@@ -158,7 +158,8 @@ export class HabitDetailsComponent implements OnInit {
             pan: {
               enabled: true,
               mode: 'x',
-              scaleMode: 'x'
+              scaleMode: 'x',
+              threshold: 1
             },
             zoom: {
               wheel: {
@@ -227,7 +228,8 @@ export class HabitDetailsComponent implements OnInit {
             pan: {
               enabled: true,
               mode: 'x',
-              scaleMode: 'x'
+              scaleMode: 'x',
+              threshold: 1
             },
             zoom: {
               wheel: {

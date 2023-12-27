@@ -53,3 +53,7 @@ div.overviewPart {
   text-align: center;
   vertical-align: central;
 }
+
+canvas {
+  touch-action: pan-y !important;
+}
